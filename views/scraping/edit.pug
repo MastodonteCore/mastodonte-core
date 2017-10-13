@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Edit Scrap
+
+  .well
+    h4 Update the scrap
+    form.form-horizontal(action="/scraping/edit/" + scrap._id, method="post")
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-1.control-label(for="inputName") Name
+        .col-sm-11
+          input.form-control#inputName(type="text", name="name", placeholder="name", value=scrap.name)
+      .form-group
+        label.col-sm-1.control-label(for="inputUrl") Url
+        .col-sm-11
+          input.form-control#inputUrl(type="text", name="url", placeholder="url", value=scrap.url)
+      each field, index in scrap.fields
+        .form-group
+          if index == 0
+            label.col-sm-1.control-label Fields
+            .col-sm-3
+              input.form-control(name="field[]", type="text", placeholder="Selector", value=field.selector)
+            .col-sm-3
+              select.form-control(name="typeField[]")
+                option(value="html", selected="" + field.type == "html") Html
+                option(value="text", selected="" + field.type == "text") Text
+            .col-sm-3
+              input.form-control(name="parent[]", type="text", placeholder="Parent selector", value=field.parent)
+          else
+            .col-sm-offset-1.col-sm-3
+              input.form-control(name="field[]", type="text", placeholder="Selector", value=field.selector)
+            .col-sm-3
+              select.form-control(name="typeField[]")
+                option(value="html", selected="" + field.type == "html") Html
+                option(value="text", selected="" + field.type == "text") Text
+            .col-sm-3
+              input.form-control(name="parent[]", type="text", placeholder="Parent selector", value=field.parent)
+            .col-sm-2.text-right
+              button.btn.btn-warning.btn-remove-field
+                i.fa.fa-times
+      .form-group
+        .col-sm-offset-1.col-sm-11.text-right
+          button.btn.btn-secondary#addField(type="button") Add field
+      .form-group
+        .col-sm-offset-1.col-sm-11
+          button.btn.btn-primary(type="submit") Send
