@@ -7,7 +7,7 @@ const sanitizeHtml = require('sanitize-html')
 const sanitizeHtmlOptions = {
   allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
     'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-    'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'img'],
+    'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'img', 'article'],
   allowedAttributes: {
     a: ['href', 'name', 'target'],
     img: ['src', 'class']
@@ -139,8 +139,13 @@ function buildHtml(body, fields) {
 
 function buildHtmlWithoutParentSelector($, selectors, html) {
   selectors.forEach(s => {
-    const $selector = $(s.selector);
-    $selector.each((i, element) => html.push($(element)[s.type]()))
+    const $selector = $(s.selector)
+    $selector.each((i, element) => {
+      const $div = $('<div/>')
+
+      $div.append(selectContent($, element, s.type))
+      html.push(cleanHtml($, $div))
+    })
   })
 }
 
@@ -155,18 +160,22 @@ function buildHtmlWithParentSelector($, selectors, parent, html) {
       const $selector = $element.find(s.selector)
 
       $selector.each((i, el) => {
-        if (s.type == 'html') {
-          $div.append($.html(el))
-        } else {
-          $div.append($(el).text())
-        }
+        $div.append(selectContent($, el, s.type))
       })
     })
 
-    html.push(cleanHtml($div))
+    html.push(cleanHtml($, $div))
   })
 }
 
 function cleanHtml($, $el) {
   return sanitizeHtml($.html($el), sanitizeHtmlOptions)
+}
+
+function selectContent($, el, type) {
+  if (type == 'html') {
+    return $.html(el)
+  } else {
+    return $(el).text()
+  }
 }
