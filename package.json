@@ -59,6 +59,7 @@
     "pug": "^2.0.0-rc.3",
     "request": "^2.81.0",
     "run-sequence": "^2.2.0",
+    "sanitize-html": "^1.14.1",
     "scrollreveal": "^3.3.6",
     "validator": "^8.0.0",
     "vinyl-buffer": "^1.0.0",

@@ -1,8 +1,29 @@
-const Scrap = require('../models/Scrap');
-const Promise = require('bluebird');
-const request = require('request');
-const cheerio = require('cheerio');
+const Scrap = require('../models/Scrap')
+const Promise = require('bluebird')
+const request = require('request')
+const cheerio = require('cheerio')
 const _ = require('lodash');
+const sanitizeHtml = require('sanitize-html')
+const sanitizeHtmlOptions = {
+  allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+    'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+    'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'img'],
+  allowedAttributes: {
+    a: ['href', 'name', 'target'],
+    img: ['src', 'class']
+  },
+  transformTags: {
+    'img': function(tagName, attribs) {
+      return {
+        tagName,
+        attribs: {
+          src: attribs.src,
+          class: 'img-responsive'
+        }
+      }
+    }
+  }
+}
 
 exports.getIndex = () => {
   return new Promise((resolve, reject) => {
@@ -29,7 +50,7 @@ exports.getScraping = (id) => {
         request.get(scrap.url, (err, response, body) => {
           if (err) return reject(err);
 
-          const html = buildHtml(body, scrap.fields);
+          const html = buildHtml(body, scrap.fields)
 
           resolve({ scrap, html })
         })
@@ -39,11 +60,11 @@ exports.getScraping = (id) => {
 
 exports.postNew = (req) => {
   return new Promise((resolve, reject) => {
-    const errors = validationScrap(req);
+    const errors = validationScrap(req)
 
-    if (errors) return reject(errors);
+    if (errors) return reject(errors)
 
-    const { name, url, field, typeField, parent } = req.body;
+    const { name, url, field, typeField, parent } = req.body
     const fields = field.map((f, i) => ({
       selector: f,
       type: typeField[i],
@@ -56,7 +77,7 @@ exports.postNew = (req) => {
     })
 
     scrap.save((err) => {
-      if (err) return reject(err);
+      if (err) return reject(err)
       resolve()
     })
   })
@@ -64,9 +85,9 @@ exports.postNew = (req) => {
 
 exports.postUpdate = (req) => {
   return new Promise((resolve, reject) => {
-    const errors = validationScrap(req);
+    const errors = validationScrap(req)
 
-    if (errors) return reject(errors);
+    if (errors) return reject(errors)
 
     const { name, url, field, typeField, parent } = req.body;
     const fields = field.map((f, i) => ({
@@ -76,25 +97,25 @@ exports.postUpdate = (req) => {
     }))
 
     Scrap.findOne({ _id: req.params.id }, (err, scrap) => {
-      if (err) return reject(err);
+      if (err) return reject(err)
 
-      scrap['name'] = name;
-      scrap['url'] = url;
+      scrap['name'] = name
+      scrap['url'] = url
       scrap['fields'] = fields
 
       scrap.save((err) => {
-        if (err) return reject(err);
-        resolve();
+        if (err) return reject(err)
+        resolve()
       })
     })
   })
 }
 
 function validationScrap(req) {
-  req.assert('name', 'Name is empty').notEmpty();
-  req.assert('url', 'URL is wrong format').isURL();
+  req.assert('name', 'Name is empty').notEmpty()
+  req.assert('url', 'URL is wrong format').isURL()
 
-  return req.validationErrors();
+  return req.validationErrors()
 }
 
 function buildHtml(body, fields) {
@@ -113,7 +134,7 @@ function buildHtml(body, fields) {
       buildHtmlWithParentSelector($, selectors, parent, html)
     }
   }
-  return html;
+  return html
 }
 
 function buildHtmlWithoutParentSelector($, selectors, html) {
@@ -128,10 +149,10 @@ function buildHtmlWithParentSelector($, selectors, parent, html) {
 
   $parentSelector.each((i, element) => {
     const $div = $('<div/>')
-    const $element = $(element);
+    const $element = $(element)
 
     selectors.forEach(s => {
-      const $selector = $element.find(s.selector);
+      const $selector = $element.find(s.selector)
 
       $selector.each((i, el) => {
         if (s.type == 'html') {
@@ -141,6 +162,11 @@ function buildHtmlWithParentSelector($, selectors, parent, html) {
         }
       })
     })
-    html.push($div)
+
+    html.push(cleanHtml($div))
   })
+}
+
+function cleanHtml($, $el) {
+  return sanitizeHtml($.html($el), sanitizeHtmlOptions)
 }
