@@ -1,29 +1,6 @@
 const Scrap = require('../models/Scrap')
 const Promise = require('bluebird')
-const request = require('request')
-const cheerio = require('cheerio')
-const _ = require('lodash');
-const sanitizeHtml = require('sanitize-html')
-const sanitizeHtmlOptions = {
-  allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
-    'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-    'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'img', 'article'],
-  allowedAttributes: {
-    a: ['href', 'name', 'target'],
-    img: ['src', 'class']
-  },
-  transformTags: {
-    'img': function(tagName, attribs) {
-      return {
-        tagName,
-        attribs: {
-          src: attribs.src,
-          class: 'img-responsive'
-        }
-      }
-    }
-  }
-}
+const scrapService = require('../services/scraping');
 
 exports.getIndex = () => {
   return new Promise((resolve, reject) => {
@@ -44,18 +21,15 @@ exports.getScrap = getScrap = (id) => {
 }
 
 exports.getScraping = (id) => {
-  return new Promise((resolve, reject) => {
-    getScrap(id)
-      .then(scrap => {
-        request.get(scrap.url, (err, response, body) => {
-          if (err) return reject(err);
+  let scrapSelected;
 
-          const html = buildHtml(body, scrap.fields)
-
-          resolve({ scrap, html })
-        })
-      })
-  })
+  return getScrap(id)
+    .then(scrap => scrapSelected = scrap)
+    .then(() => {
+      const { url, fields } = scrapSelected;
+      return scrapService(url, fields);
+    })
+    .then(html => ({ scrap: scrapSelected, html }))
 }
 
 exports.postNew = (req) => {
@@ -116,66 +90,4 @@ function validationScrap(req) {
   req.assert('url', 'URL is wrong format').isURL()
 
   return req.validationErrors()
-}
-
-function buildHtml(body, fields) {
-  let html = [];
-  const $ = cheerio.load(body);
-  const selectorsGrouped = _.mapValues(_.groupBy(fields, 'parent'), list => {
-    return list.map(field => _.omit(field, 'parent'))
-  })
-
-  for (let parent in selectorsGrouped) {
-    const selectors = selectorsGrouped[parent];
-
-    if (parent == '') {
-      buildHtmlWithoutParentSelector($, selectors, html)
-    } else {
-      buildHtmlWithParentSelector($, selectors, parent, html)
-    }
-  }
-  return html
-}
-
-function buildHtmlWithoutParentSelector($, selectors, html) {
-  selectors.forEach(s => {
-    const $selector = $(s.selector)
-    $selector.each((i, element) => {
-      const $div = $('<div/>')
-
-      $div.append(selectContent($, element, s.type))
-      html.push(cleanHtml($, $div))
-    })
-  })
-}
-
-function buildHtmlWithParentSelector($, selectors, parent, html) {
-  const $parentSelector = $(parent);
-
-  $parentSelector.each((i, element) => {
-    const $div = $('<div/>')
-    const $element = $(element)
-
-    selectors.forEach(s => {
-      const $selector = $element.find(s.selector)
-
-      $selector.each((i, el) => {
-        $div.append(selectContent($, el, s.type))
-      })
-    })
-
-    html.push(cleanHtml($, $div))
-  })
-}
-
-function cleanHtml($, $el) {
-  return sanitizeHtml($.html($el), sanitizeHtmlOptions)
-}
-
-function selectContent($, el, type) {
-  if (type == 'html') {
-    return $.html(el)
-  } else {
-    return $(el).text()
-  }
 }
