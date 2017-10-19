@@ -1,3 +1,4 @@
+//Fonts
 $fa-font-path: "/fonts/fontAwesome";
 $icon-font-path: "/fonts/bootstrap";
 
@@ -9,7 +10,13 @@ $icon-font-path: "/fonts/bootstrap";
 @import "../../../node_modules/magnific-popup/src/css/main.scss";
 @import "../../../node_modules/bootstrap-select/sass/bootstrap-select.scss";
 
+//Variables
+@import "./variables";
+
 //Mixins
 @import "./mixins/font-face";
 
 @import "./utils";
+
+//Components
+@import "./components/columns";

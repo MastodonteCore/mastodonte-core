@@ -26,6 +26,7 @@ block content
               select.form-control(name="typeField[]")
                 option(value="html", selected="" + field.type == "html") Html
                 option(value="text", selected="" + field.type == "text") Text
+                option(value="link", selected="" + field.type == "link") Link
             .col-sm-3
               input.form-control(name="parent[]", type="text", placeholder="Parent selector", value=field.parent)
           else
@@ -35,6 +36,7 @@ block content
               select.form-control(name="typeField[]")
                 option(value="html", selected="" + field.type == "html") Html
                 option(value="text", selected="" + field.type == "text") Text
+                option(value="link", selected="" + field.type == "link") Link
             .col-sm-3
               input.form-control(name="parent[]", type="text", placeholder="Parent selector", value=field.parent)
             .col-sm-2.text-right

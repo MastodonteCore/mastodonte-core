@@ -11,6 +11,7 @@ export function addField() {
         <select class="form-control" name="typeField[]">
           <option value="html">Html</option>
           <option value="text">Text</option>
+          <option value="link">Link</option>
         </select>
       </div>
       <div class="col-sm-3">

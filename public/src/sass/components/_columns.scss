@@ -1,0 +1,17 @@
+@for $i from 1 through $max-columns {
+  .columns-#{$i} {
+    column-count: $i;
+    column-gap: $column-gap;
+  }
+}
+
+@each $viewport, $size in $viewports-min {
+  @for $i from 1 through $max-columns {
+    .columns-#{$viewport}-#{$i} {
+      @media (min-width: $size) {
+        column-count: $i;
+        column-gap: $column-gap;
+      }
+    }
+  }
+}

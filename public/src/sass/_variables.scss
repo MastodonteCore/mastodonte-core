@@ -1,0 +1,16 @@
+//Columns Layout
+$column-gap: 40px;
+$max-columns: 4;
+
+//Viewports
+$viewports-min: (
+  xs: $screen-xs-min,
+  sm: $screen-sm-min,
+  md: $screen-md-min,
+  lg: $screen-lg-min
+);
+$viewports-max: (
+  xs: $screen-xs-max,
+  sm: $screen-sm-max,
+  md: $screen-md-max
+);

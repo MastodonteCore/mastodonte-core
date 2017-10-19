@@ -2,7 +2,10 @@ const Promise = require('bluebird')
 const request = require('request')
 const cheerio = require('cheerio')
 const _ = require('lodash')
+const { URL } = require('url');
 const sanitizeHtml = require('../utils/sanitizeHtml')
+
+let BASE_URL;
 
 function buildHtml(body, fields) {
   let html = [];
@@ -26,6 +29,7 @@ function buildHtml(body, fields) {
 function buildHtmlWithoutParentSelector($, selectors, html) {
   selectors.forEach(s => {
     const $selector = $(s.selector)
+
     $selector.each((i, element) => {
       const $div = $('<div/>')
 
@@ -61,12 +65,21 @@ function cleanHtml($, $el) {
 function selectContent($, el, type) {
   if (type == 'html') {
     return $.html(el)
+  } else if (type == 'link') {
+    const href = $(el).attr('href')
+    const urlComplete = new URL(href, BASE_URL)
+    
+    return $(`<a />`).attr('href', urlComplete).text(href);
   } else {
     return $(el).text()
   }
 }
 
 module.exports = function(url, selectors) {
+  const u = new URL(url);
+
+  BASE_URL = u.origin;
+
   return new Promise((resolve, reject) => {
     request.get(url, (err, response, body) => {
       if (err) return reject(err);
