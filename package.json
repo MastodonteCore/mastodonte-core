@@ -1,11 +1,11 @@
 {
-  "name": "uservices",
+  "name": "mastodonte",
   "version": "1.0.0",
   "description": "",
   "author": "Olivier Monnier",
   "license": "MIT",
   "scripts": {
-    "start": "node app.js",
+    "start": "pm2 start ecosystem.config.js --env production",
     "test": "mocha --reporter spec",
     "postinstall": "gulp build",
     "dev": "gulp server",
