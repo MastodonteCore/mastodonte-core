@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  .page-header
+    h2 New Pdf
+
+  .well
+    form.form-horizontal(action="/pdf/new", method="post")
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-2.control-label(for="inputTitle") Title
+        .col-sm-10
+          input.form-control#inputTitle(name="title")
+      .form-group
+        label.col-sm-2.control-label(for="inputHtml") Body
+        .col-sm-10
+          textarea.form-control#inputHtml(name="html", cols="30", rows="10")
+      .form-group
+        .col-sm-offset-2.col-sm-10
+          button.btn.btn-primary(type="submit") Send
+          a.btn.btn-default(href="/") Cancel

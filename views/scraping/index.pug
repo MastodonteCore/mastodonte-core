@@ -1,15 +1,15 @@
 extends ../layout
 
 block content
-  h2 List Websites
-  hr
+  .page-header
+    h2 List Websites
 
   .btn-group.btn-group-justified
     a.btn.btn-primary(href='/scraping/new')
       i.fa.fa-newspaper-o
       | &nbsp;
       | New Website
-
+  hr
   .row
     each scrap in scraps
       .col-sm-4

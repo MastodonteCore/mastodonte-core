@@ -97,12 +97,13 @@ app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 315576000
 /**
  * Routes
  */
-const primary = require('./routes/app');
-const scraping = require('./routes/scraping');
+const primaryRoutes = require('./routes/app');
+const pdfRoutes = require('./routes/pdf');
+const scrapingRoutes = require('./routes/scraping');
 
-app.use('/', primary);
-app.use('/scraping', scraping);
-
+app.use('/', primaryRoutes);
+app.use('/pdf', pdfRoutes);
+app.use('/scraping', scrapingRoutes);
 
 /**
  * Error Handler.

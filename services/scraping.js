@@ -68,8 +68,11 @@ function selectContent($, el, type) {
   } else if (type == 'link') {
     const href = $(el).attr('href')
     const urlComplete = new URL(href, BASE_URL)
+    const $div = $('<div/>');
+    const $link = $(`<a />`).attr('href', urlComplete).text(href);
     
-    return $(`<a />`).attr('href', urlComplete).text(href);
+    $div.append($link);
+    return $div;
   } else {
     return $(el).text()
   }
