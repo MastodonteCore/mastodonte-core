@@ -5,66 +5,66 @@ const _ = require('lodash')
 const { getBaseUrl, resolveUrl } = require('../utils/url')
 const sanitizeHtml = require('../utils/sanitizeHtml')
 
-let BASE_URL;
+let BASE_URL, $;
 
 function buildHtml(body, fields) {
   let html = [];
-  const $ = cheerio.load(body);
   const selectorsGrouped = _.mapValues(_.groupBy(fields, 'parent'), list => {
     return list.map(field => _.omit(field, 'parent'))
   })
+
+  $ = cheerio.load(body);
 
   for (let parent in selectorsGrouped) {
     const selectors = selectorsGrouped[parent];
 
     if (parent == '') {
-      buildHtmlWithoutParentSelector($, selectors, html)
+      buildHtmlWithoutParentSelector(selectors, html)
     } else {
-      buildHtmlWithParentSelector($, selectors, html, parent)
+      buildHtmlWithParentSelector(selectors, html, parent)
     }
   }
   return html
 }
 
-function buildHtmlWithoutParentSelector($, selectors, html) {
+function buildHtmlWithoutParentSelector(selectors, html) {
   selectors.forEach(s => {
-    const $selector = $(s.selector)
+    const { selector, type, unique } = s;
+    const $selector = $(selector)
+    const $container = $('<div/>')
 
-    $selector.each((i, element) => {
-      if (i > 0 && s.unique) return
-      const $div = $('<div/>')
-
-      $div.append(selectContent($, element, s.type))
-      html.push(cleanHtml($, $div))
-    })
+    prepareContent($selector, $container, type, unique)
+    html.push(cleanHtml($container))
   })
 }
 
-function buildHtmlWithParentSelector($, selectors, html, parent) {
+function buildHtmlWithParentSelector(selectors, html, parent) {
   const $parentSelector = $(parent)
 
   $parentSelector.each((i, element) => {
-    const $div = $('<div/>')
+    const $container = $('<div/>')
     const $element = $(element)
 
     selectors.forEach(s => {
-      const $selector = $element.find(s.selector)
+      const { selector, type, unique } = s;
+      const $selector = $element.find(selector)
 
-      $selector.each((i, el) => {
-        if (i > 0 && s.unique) return
-        $div.append(selectContent($, el, s.type))
-      })
+      prepareContent($selector, $container, type, unique)
     })
 
-    html.push(cleanHtml($, $div))
+    html.push(cleanHtml($container))
   })
 }
 
-function cleanHtml($, $el) {
-  return sanitizeHtml($.html($el))
+function prepareContent($selector, $container, type, isUnique) {
+  $selector.each((i, element) => {
+    if (i > 0 && isUnique) return
+
+    $container.append(selectContent(element, type))
+  })
 }
 
-function selectContent($, el, type) {
+function selectContent(el, type) {
   if (type == 'html') {
     return $.html(el)
   } else if (type == 'link') {
@@ -78,6 +78,10 @@ function selectContent($, el, type) {
   } else {
     return $(el).text()
   }
+}
+
+function cleanHtml($el) {
+  return sanitizeHtml($.html($el))
 }
 
 module.exports = function(url, selectors) {

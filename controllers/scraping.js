@@ -38,7 +38,7 @@ exports.postNew = (req) => {
 
     if (errors) return reject(errors)
 
-    const { name, url, field, typeField, parent, unique } = req.body
+    const { name, url, field, typeField, parent, unique = [] } = req.body
     const fields = field.map((f, i) => ({
       selector: f,
       type: typeField[i],
