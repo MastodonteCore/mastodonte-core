@@ -6,31 +6,34 @@ block content
 
   .well
     h4 Add a new scrap
-    form.form-horizontal(action="/scraping/new", method="post")
+    form(action="/scraping/new", method="post")
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
-        label.col-sm-2.control-label(for="inputName") Name
-        .col-sm-10
-          input.form-control#inputName(type="text", name="name", placeholder="name")
+        label(for="inputName") Name
+        input.form-control#inputName(type="text", name="name", placeholder="name")
       .form-group
-        label.col-sm-2.control-label(for="inputUrl") Url
-        .col-sm-10
-          input.form-control#inputUrl(type="text", name="url", placeholder="url")
+        label(for="inputUrl") Url
+        input.form-control#inputUrl(type="text", name="url", placeholder="url")
       .form-group
-        label.col-sm-2.control-label Fields
-        .col-sm-3
-          input.form-control(name="field[]", type="text", placeholder="Selector")
-        .col-sm-3
-          select.form-control(name="typeField[]")
-            option(value="html") Html
-            option(value="text") Text
-            option(value="link") Link
-        .col-sm-3
-          input.form-control(name="parent[]", type="text", placeholder="Parent selector")
+        label Fields
+        .row
+          .col-md-3
+            input.form-control(name="field[]", type="text", placeholder="Selector")
+          .col-md-3
+            select.form-control(name="typeField[]")
+              option(value="html") Html
+              option(value="text") Text
+              option(value="link") Link
+          .col-md-3
+            input.form-control(name="parent[]", type="text", placeholder="Parent selector")
+          .col-md-2
+            .checkbox
+              label
+                input(type="checkbox", name="unique[]", value="0")
+                | Unique
       .form-group
-        .col-sm-offset-2.col-sm-10.text-right
+        .text-right
           button.btn.btn-secondary#addField(type="button") Add field
       .form-group
-        .col-sm-offset-2.col-sm-10
-          button.btn.btn-primary(type="submit") Send
-          a.btn.btn-default(href="/scraping") Cancel
+        button.btn.btn-primary(type="submit") Send
+        a.btn.btn-default(href="/scraping") Cancel

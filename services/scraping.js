@@ -31,6 +31,7 @@ function buildHtmlWithoutParentSelector($, selectors, html) {
     const $selector = $(s.selector)
 
     $selector.each((i, element) => {
+      if (i > 0 && s.unique) return;
       const $div = $('<div/>')
 
       $div.append(selectContent($, element, s.type))
@@ -50,6 +51,7 @@ function buildHtmlWithParentSelector($, selectors, html, parent) {
       const $selector = $element.find(s.selector)
 
       $selector.each((i, el) => {
+        if (i > 0 && s.unique) return;
         $div.append(selectContent($, el, s.type))
       })
     })

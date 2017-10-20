@@ -15,6 +15,7 @@ tmp
 
 #Build
 public/dist
+public/pdf
 
 # API keys and secrets
 .env

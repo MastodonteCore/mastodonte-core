@@ -6,7 +6,7 @@ const scrapController = require('../controllers/scraping');
  * Scrap routes.
  */
 router.get('/', (req, res, next) => {
-  scrapController.getIndex()
+  return scrapController.getIndex()
     .then(scraps => {
       res.render('scraping/index', {
         title: 'Scraping',
@@ -23,7 +23,7 @@ router.get('/new', (req, res, next) => {
 
 
 router.get('/:id', (req, res, next) => {
-  scrapController.getScraping(req.params.id)
+  return scrapController.getScraping(req.params.id)
     .then(result => {
       const { scrap, html } = result;
 
@@ -36,7 +36,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/new', (req, res, next) => {
-  scrapController.postNew(req)
+  return scrapController.postNew(req)
     .then(() => res.redirect('/scraping'))
     .catch(errors => {
       req.flash('errors', errors);
@@ -45,7 +45,7 @@ router.post('/new', (req, res, next) => {
 })
 
 router.get('/edit/:id', (req, res, next) => {
-  scrapController.getScrap(req.params.id)
+  return scrapController.getScrap(req.params.id)
     .then(scrap => res.render('scraping/edit', {
       title: `${scrap.name} edit`,
       scrap
@@ -57,7 +57,7 @@ router.get('/edit/:id', (req, res, next) => {
 })
 
 router.post('/edit/:id', (req, res, next) => {
-  scrapController.postUpdate(req)
+  return scrapController.postUpdate(req)
     .then(() => res.redirect('/scraping'))
     .catch(errors => {
       req.flash('errors', errors);
@@ -69,14 +69,14 @@ router.post('/edit/:id', (req, res, next) => {
  * API Scrap routes
  */
 router.get('/api', (req, res, next) => {
-  scrapController.getIndex()
+  return scrapController.getIndex()
     .then(scraps => {
       res.json({ scraps })
     })
 })
 
 router.get('/api/:id', (req, res, next) => {
-  scrapController.getScraping(req.params.id)
+  return scrapController.getScraping(req.params.id)
     .then(html => {
       res.json({ html })
     })
@@ -86,7 +86,7 @@ router.get('/api/:id', (req, res, next) => {
 })
 
 router.post('/api/new', (req, res, next) => {
-  scrapController.postNew(req)
+  return scrapController.postNew(req)
     .then(resp => {
       res.json({ resp })
     })

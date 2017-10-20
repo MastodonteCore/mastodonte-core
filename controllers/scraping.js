@@ -38,11 +38,12 @@ exports.postNew = (req) => {
 
     if (errors) return reject(errors)
 
-    const { name, url, field, typeField, parent } = req.body
+    const { name, url, field, typeField, parent, unique } = req.body
     const fields = field.map((f, i) => ({
       selector: f,
       type: typeField[i],
-      parent: parent[i]
+      parent: parent[i],
+      unique: unique.indexOf(i.toString()) >= 0
     }))
     const scrap = new Scrap({
       name,
@@ -63,11 +64,13 @@ exports.postUpdate = (req) => {
 
     if (errors) return reject(errors)
 
-    const { name, url, field, typeField, parent } = req.body;
+    const { name, url, field, typeField, parent, unique = [] } = req.body;
+
     const fields = field.map((f, i) => ({
       selector: f,
       type: typeField[i],
-      parent: parent[i]
+      parent: parent[i],
+      unique: unique.indexOf(i.toString()) >= 0
     }))
 
     Scrap.findOne({ _id: req.params.id }, (err, scrap) => {

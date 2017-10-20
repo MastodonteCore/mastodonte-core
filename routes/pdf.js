@@ -9,14 +9,14 @@ router.get('/new', (req, res, next) => {
 })
 
 router.post('/new', (req, res, next) => {
-  pdfController.buildPdf(req)
+  return pdfController.buildPdf(req)
     .then((pathPdf) => {
       res.sendfile(pathPdf)
     })
 })
 
 router.post('/api', (req, res, next) => {
-  pdfController.buildPdf(req)
+  return pdfController.buildPdf(req)
     .then((pathPdf) => {
       res.sendfile(pathPdf)
     })

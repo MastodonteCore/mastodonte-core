@@ -19,7 +19,13 @@ module.exports = function(params) {
       .then(() => PAGE.setContent(html))
       .then(() => PAGE.pdf({
         path: pathPdf,
-        format: 'A4'
+        format: 'A4',
+        margin: {
+          top: '17mm',
+          right: '17mm',
+          bottom: '17mm',
+          left: '17mm'
+        }
       }))
       .then(() => resolve(pathPdf))
       .catch(reject)
