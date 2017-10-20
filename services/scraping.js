@@ -2,7 +2,7 @@ const Promise = require('bluebird')
 const request = require('request')
 const cheerio = require('cheerio')
 const _ = require('lodash')
-const { URL } = require('url');
+const { getBaseUrl, resolveUrl } = require('../utils/url')
 const sanitizeHtml = require('../utils/sanitizeHtml')
 
 let BASE_URL;
@@ -31,7 +31,7 @@ function buildHtmlWithoutParentSelector($, selectors, html) {
     const $selector = $(s.selector)
 
     $selector.each((i, element) => {
-      if (i > 0 && s.unique) return;
+      if (i > 0 && s.unique) return
       const $div = $('<div/>')
 
       $div.append(selectContent($, element, s.type))
@@ -41,7 +41,7 @@ function buildHtmlWithoutParentSelector($, selectors, html) {
 }
 
 function buildHtmlWithParentSelector($, selectors, html, parent) {
-  const $parentSelector = $(parent);
+  const $parentSelector = $(parent)
 
   $parentSelector.each((i, element) => {
     const $div = $('<div/>')
@@ -51,7 +51,7 @@ function buildHtmlWithParentSelector($, selectors, html, parent) {
       const $selector = $element.find(s.selector)
 
       $selector.each((i, el) => {
-        if (i > 0 && s.unique) return;
+        if (i > 0 && s.unique) return
         $div.append(selectContent($, el, s.type))
       })
     })
@@ -69,11 +69,11 @@ function selectContent($, el, type) {
     return $.html(el)
   } else if (type == 'link') {
     const href = $(el).attr('href')
-    const urlComplete = new URL(href, BASE_URL)
-    const $div = $('<div/>');
-    const $link = $(`<a />`).attr('href', urlComplete).text(href);
+    const urlComplete = resolveUrl(href, BASE_URL)
+    const $div = $('<div/>')
+    const $link = $(`<a />`).attr('href', urlComplete).text(href)
     
-    $div.append($link);
+    $div.append($link)
     return $div;
   } else {
     return $(el).text()
@@ -81,9 +81,7 @@ function selectContent($, el, type) {
 }
 
 module.exports = function(url, selectors) {
-  const u = new URL(url);
-
-  BASE_URL = u.origin;
+  BASE_URL = getBaseUrl(url);
 
   return new Promise((resolve, reject) => {
     request.get(url, (err, response, body) => {
