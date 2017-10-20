@@ -6,7 +6,7 @@ exports.getIndex = () => {
   return new Promise((resolve, reject) => {
     Scrap.find({}, (err, scraps) => {
       if (err) return reject(err)
-      resolve(scraps)
+      return resolve(scraps)
     })
   })
 }
@@ -15,7 +15,7 @@ exports.getScrap = getScrap = (id) => {
   return new Promise((resolve, reject) => {
     Scrap.findOne({ _id: id }, (err, scrap) => {
       if (err) return reject(err)
-      resolve(scrap)
+      return resolve(scrap)
     })
   })
 }
@@ -53,7 +53,7 @@ exports.postNew = (req) => {
 
     scrap.save((err) => {
       if (err) return reject(err)
-      resolve()
+      return resolve()
     })
   })
 }
@@ -82,7 +82,7 @@ exports.postUpdate = (req) => {
 
       scrap.save((err) => {
         if (err) return reject(err)
-        resolve()
+        return resolve()
       })
     })
   })
@@ -93,7 +93,7 @@ exports.getDelete = (req) => {
     Scrap.remove({ _id: req.params.id }, (err) => {
       if (err) return reject(err);
 
-      resolve()
+      return resolve()
     })
   })
 }

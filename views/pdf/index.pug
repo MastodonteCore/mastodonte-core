@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  .page-header
+    h2 List PDFs
+
+  .btn-group.btn-group-justified
+    a.btn.btn-primary(href='/pdf/new') New PDF
+
+  hr
+  .panel.panel-default
+    .panel-heading
+      button.btn.btn-danger#btnPdfDelete Delete
+    table.table.table-striped.table-hover
+      tbody
+        each pdf in pdfs
+          tr
+            td
+              input(type="checkbox", value=pdf)
+            td
+              a(href="/pdf/" + pdf )= pdf

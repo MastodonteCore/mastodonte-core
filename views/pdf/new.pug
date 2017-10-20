@@ -8,7 +8,7 @@ block content
     form.form-horizontal(action="/pdf/new", method="post")
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
-        label.col-sm-2.control-label(for="inputTitle") Title
+        label.col-sm-2.control-label(for="inputTitle") Title document
         .col-sm-10
           input.form-control#inputTitle(name="title")
       .form-group
