@@ -88,6 +88,16 @@ exports.postUpdate = (req) => {
   })
 }
 
+exports.getDelete = (req) => {
+  return new Promise((resolve, reject) => {
+    Scrap.remove({ _id: req.params.id }, (err) => {
+      if (err) return reject(err);
+
+      resolve()
+    })
+  })
+}
+
 function validationScrap(req) {
   req.assert('name', 'Name is empty').notEmpty()
   req.assert('url', 'URL is wrong format').isURL()

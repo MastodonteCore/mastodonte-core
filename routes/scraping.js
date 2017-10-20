@@ -65,6 +65,15 @@ router.post('/edit/:id', (req, res, next) => {
     })
 })
 
+router.get('/delete/:id', (req, res, next) => {
+  return scrapController.getDelete(req)
+    .then(() => res.redirect('/scraping'))
+    .catch(errors => {
+      req.flash('errors', errors);
+      return res.redirect(`/scraping/${req.params.id}`)
+    })
+})
+
 /**
  * API Scrap routes
  */
