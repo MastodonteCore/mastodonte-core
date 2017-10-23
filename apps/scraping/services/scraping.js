@@ -2,8 +2,8 @@ const Promise = require('bluebird')
 const request = require('request')
 const cheerio = require('cheerio')
 const _ = require('lodash')
-const { getBaseUrl, resolveUrl } = require('../utils/url')
-const sanitizeHtml = require('../utils/sanitizeHtml')
+const { getBaseUrl, resolveUrl } = require('../../../utils/url')
+const sanitizeHtml = require('../../../utils/sanitizeHtml')
 
 let BASE_URL, $;
 

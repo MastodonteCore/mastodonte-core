@@ -1,7 +1,7 @@
 const Promise = require('bluebird');
 const puppeteer = require('puppeteer');
-const formatDate = require('../utils/formatDate');
-const { formatFileName } = require('../utils/file');
+const formatDate = require('../../../utils/formatDate');
+const { formatFileName } = require('../../../utils/fileSystem');
 const path = require('path');
 
 module.exports = function(params) {
@@ -29,6 +29,7 @@ module.exports = function(params) {
           left: '17mm'
         }
       }))
+      .then(() => BROWSER.close())
       .then(() => resolve(pathPdf))
       .catch(reject)
   })

@@ -8,7 +8,7 @@ const scrapController = require('../controllers/scraping');
 router.get('/', (req, res, next) => {
   return scrapController.getIndex()
     .then(scraps => {
-      res.render('scraping/index', {
+      res.render('index', {
         title: 'Scraping',
         scraps
       })
@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/new', (req, res, next) => {
-  return res.render('scraping/new', {
+  return res.render('new', {
     title: 'New scrap'
   })
 })
@@ -27,7 +27,7 @@ router.get('/:id', (req, res, next) => {
     .then(result => {
       const { scrap, html } = result;
 
-      res.render('scraping/view', {
+      res.render('view', {
         title: scrap.name,
         scrap,
         html
@@ -46,7 +46,7 @@ router.post('/new', (req, res, next) => {
 
 router.get('/edit/:id', (req, res, next) => {
   return scrapController.getScrap(req.params.id)
-    .then(scrap => res.render('scraping/edit', {
+    .then(scrap => res.render('edit', {
       title: `${scrap.name} edit`,
       scrap
     }))

@@ -13,10 +13,12 @@ const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const path = require('path');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
+const { getDirectories } = require('./utils/fileSystem');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -27,6 +29,11 @@ dotenv.load({ path: '.env.example' });
  * Create Express server.
  */
 const app = express();
+
+/**
+ * Apps directories
+ */
+const appDirectories = getDirectories(path.join(__dirname, './apps'));
 
 /**
  * Connect to MongoDB.
@@ -75,6 +82,10 @@ app.use((req, res, next) => {
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
+  res.locals.appDirectories = appDirectories;
+  next();
+})
+app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
@@ -97,13 +108,13 @@ app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 315576000
 /**
  * Routes
  */
-const primaryRoutes = require('./routes/app');
-const pdfRoutes = require('./routes/pdf');
-const scrapingRoutes = require('./routes/scraping');
+app.get('/', (req, res, next) => res.render('home'))
 
-app.use('/', primaryRoutes);
-app.use('/pdf', pdfRoutes);
-app.use('/scraping', scrapingRoutes);
+/**
+ * Apps Routes
+ */
+appDirectories.forEach(dir => app.use(`/${dir.name}`, require(`./apps/${dir.name}/index`)))
+
 
 /**
  * Error Handler.

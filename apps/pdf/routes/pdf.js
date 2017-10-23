@@ -4,14 +4,14 @@ const pdfController = require('../controllers/pdf');
 
 router.get('/', (req, res, next) => {
   return pdfController.getListPdf()
-    .then((pdfs) => res.render('pdf/index', {
+    .then((pdfs) => res.render('index', {
       title: 'List PDFs',
       pdfs
     }))
 })
 
 router.get('/new', (req, res, next) => {
-  return res.render('pdf/new', {
+  return res.render('new', {
     title: 'PDF'
   })
 })
