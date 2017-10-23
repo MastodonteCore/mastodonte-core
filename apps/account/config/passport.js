@@ -115,7 +115,7 @@ exports.isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/account/login');
 };
 
 /**
@@ -127,6 +127,6 @@ exports.isAuthorized = (req, res, next) => {
   if (token) {
     next();
   } else {
-    res.redirect(`/auth/${provider}`);
+    res.redirect(`/account/auth/${provider}`);
   }
 };
