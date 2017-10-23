@@ -1,4 +1,4 @@
-extends ../layout
+extends ../../../views/layout
 
 block content
   .page-header
@@ -19,3 +19,6 @@ block content
         .col-sm-offset-2.col-sm-10
           button.btn.btn-primary(type="submit") Send
           a.btn.btn-default(href="/") Cancel
+
+block scripts
+  script(src="/pdf/js/main.js")

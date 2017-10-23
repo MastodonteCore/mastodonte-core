@@ -108,7 +108,9 @@ app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 315576000
 /**
  * Routes
  */
-app.get('/', (req, res, next) => res.render('home'))
+app.get('/', (req, res, next) => res.render('home', {
+  title: 'Home'
+}))
 
 /**
  * Apps Routes

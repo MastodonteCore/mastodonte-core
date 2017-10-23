@@ -1,8 +1,14 @@
+$(document).ready(function () {
+  // Scraping
+  $(document).on('click', '#addField', addField)
+  $(document).on('click', '.btn-remove-field', removeField)
+})
+
 export function addField() {
   const $this = $(this)
   const $parent = $this.closest('.form-group')
   const nbUnique = $('input[name^="unique"]').length;
-  
+
   $parent.before(`
     <div class="form-group">
       <div class="row">

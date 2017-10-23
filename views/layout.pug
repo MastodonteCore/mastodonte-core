@@ -9,6 +9,9 @@ html
     title #{title} - Hackathon Starter
     link(rel='shortcut icon', href='/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
+
+    block css
+
     script.
       window._csrf = '#{_csrf}';
   body
@@ -22,6 +25,8 @@ html
 
     script(src='/js/vendors.js')
     script(src='/js/main.js')
+
+    block scripts
 
     script.
       if ('serviceWorker' in navigator) {

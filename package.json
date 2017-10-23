@@ -1,5 +1,5 @@
 {
-  "name": "mastodonte",
+  "name": "mastodonte-core",
   "version": "1.0.0",
   "description": "",
   "author": "Olivier Monnier",
@@ -24,7 +24,6 @@
     "bootswatch": "^3.3.7",
     "browserify": "^14.4.0",
     "chalk": "^2.1.0",
-    "cheerio": "^1.0.0-rc.2",
     "compression": "^1.7.0",
     "connect-mongo": "^1.3.2",
     "del": "^3.0.0",
@@ -57,8 +56,6 @@
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
     "pug": "^2.0.0-rc.3",
-    "puppeteer": "^0.12.0",
-    "request": "^2.81.0",
     "run-sequence": "^2.2.0",
     "sanitize-html": "^1.14.1",
     "validator": "^8.0.0",
