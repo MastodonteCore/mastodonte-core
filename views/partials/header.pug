@@ -9,18 +9,12 @@
       a.navbar-brand(href='/')
         i.fa.fa-cube
         | &nbsp;
-        | Project name
+        | Mastodonte
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         each app in appDirectories
           li
             a(href="/" + app.name) !{app.name.toUpperCase()}
-        //- li(class=(title === 'Home') ? 'active' : undefined)
-        //-   a(href='/') Home
-        //- li(class=(title === 'Scraping') ? 'active' : undefined)
-        //-   a(href='/scraping') Scraping
-        //- li(class=(title === 'PDF') ? 'active' : undefined)
-        //-   a(href='/pdf') PDF
         li
           a(href='/status') Status
       ul.nav.navbar-nav.navbar-right
