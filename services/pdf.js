@@ -1,6 +1,7 @@
 const Promise = require('bluebird');
 const puppeteer = require('puppeteer');
 const formatDate = require('../utils/formatDate');
+const { formatFileName } = require('../utils/file');
 const path = require('path');
 
 module.exports = function(params) {
@@ -8,7 +9,8 @@ module.exports = function(params) {
 
     let BROWSER, PAGE;
     const { html, title } = params;
-    const pathPdf = path.join(__dirname, `../public/pdf/${formatDate(Date.now())}_${title || 'document'}.pdf`);
+    const filename = formatFileName(title) || 'document';
+    const pathPdf = path.join(__dirname, `../public/pdf/${formatDate(Date.now())}_${filename}.pdf`);
 
     return puppeteer.launch()
       .then(browser => {

@@ -10,11 +10,6 @@ router.get('/', (req, res, next) => {
     }))
 })
 
-router.get('/:pdf_name', (req, res, next) => {
-  return pdfController.getPdf(req.params.pdf_name)
-    .then((pdfPath) => res.sendfile(pdfPath))
-})
-
 router.get('/new', (req, res, next) => {
   return res.render('pdf/new', {
     title: 'PDF'
@@ -28,7 +23,10 @@ router.post('/new', (req, res, next) => {
 
 router.post('/delete', (req, res, next) => {
   return pdfController.deletePdf(req)
-    .then(() => res.redirect('/pdf'))
+    .then(() => {
+      req.flash('success', 'PDF deleted with success')
+      return res.redirect('/pdf');
+    })
 })
 
 router.post('/api', (req, res, next) => {
@@ -36,6 +34,18 @@ router.post('/api', (req, res, next) => {
     .then((pathPdf) => {
       res.sendfile(pathPdf)
     })
+})
+
+router.post('/api/delete', (req, res, next) => {
+  return pdfController.deletePdf(req)
+    .then(() => {
+      return res.status(200).end()
+    })
+})
+
+router.get('/:pdf_name', (req, res, next) => {
+  return pdfController.getPdf(req.params.pdf_name)
+    .then((pdfPath) => res.sendfile(pdfPath))
 })
 
 module.exports = router;

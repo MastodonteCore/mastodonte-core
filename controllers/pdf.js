@@ -17,7 +17,13 @@ exports.getListPdf = () => {
 
 exports.getPdf = getPdf = (pdfName) => {
   return new Promise((resolve, reject) => {
-    return resolve(path.join(__dirname, `../public/pdf/${pdfName}`))
+    const pdfPath = path.join(__dirname, `../public/pdf/${pdfName}`);
+
+    if (fs.existsSync(pdfPath)) {
+      return resolve(pdfPath)
+    } else {
+      return reject()
+    }
   })
 }
 

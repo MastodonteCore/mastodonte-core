@@ -5,13 +5,15 @@ export function deletePdf() {
   
   if (pdfs.length > 0) {
     $.ajax({ 
-      url: '/pdf/delete', 
+      url: '/pdf/api/delete', 
       type: 'POST', 
       headers: {
         'X-CSRF-Token': _csrf
       },
       data: { pdfs }
     })
-    .done(() => location.reload())
+    .done(() => {
+      location.reload(true)
+    })
   }
 }
