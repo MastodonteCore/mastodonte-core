@@ -15,7 +15,6 @@ const flash = require('express-flash');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const { getDirectories } = require('./utils/fileSystem');
@@ -69,8 +68,6 @@ app.use(session({
     clear_interval: 3600
   })
 }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
   if (req.path === '/api/upload') {
@@ -85,24 +82,6 @@ app.use((req, res, next) => {
   res.locals.appDirectories = appDirectories;
   next();
 })
-app.use((req, res, next) => {
-  res.locals.user = req.user;
-  next();
-});
-app.use((req, res, next) => {
-  // After successful login, redirect back to the intended page
-  if (!req.user &&
-      req.path !== '/login' &&
-      req.path !== '/signup' &&
-      !req.path.match(/^\/auth/) &&
-      !req.path.match(/\./)) {
-    req.session.returnTo = req.path;
-  } else if (req.user &&
-      req.path === '/account') {
-    req.session.returnTo = req.path;
-  }
-  next();
-});
 app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }));
 
 /**

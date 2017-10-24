@@ -120,7 +120,7 @@ gulp.task('bundle-sw', () => {
   return wbBuild.generateSW({
     globDirectory: './public/dist/',
     swDest: './public/dist/sw.js',
-    globPatterns: ['**\/*.{html,js,css,eot,svg,ttf,woff,woff2}'],
+    globPatterns: ['**\/*.{html,js,css,eot,svg,ttf,woff,woff2}']
   })
   .then(() => {
     console.log('Service worker generated.');
