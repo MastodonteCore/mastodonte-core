@@ -13,16 +13,26 @@ block content
 
   .hidden-print
     .btn-group.btn-group-justified
-      a.btn.btn-primary(href="/scraping/edit/" + scrap._id) Edit
-      a.btn.btn-danger(href="/scraping/delete/" + scrap._id) Delete
+      a.btn.btn-primary(href="/scraping/edit/" + scrap._id)
+        i.fa.fa-pencil-square-o
+        | &nbsp;
+        | Edit
+      a.btn.btn-danger(href="/scraping/delete/" + scrap._id)
+        i.fa.fa-eraser
+        | &nbsp;
+        | Delete
 
     hr
 
     .btn-group.pull-right
-      button.btn.btn-default.btn-print(type="button")
+      button.btn.btn-default.btn-sm.btn-print(type="button")
         i.fa.fa-print
-      a.btn.btn-default(href="/scraping/" + scrap._id + "/pdf")
+        | &nbsp;
+        | Print
+      a.btn.btn-default.btn-sm(href="/scraping/" + scrap._id + "/pdf")
         i.fa.fa-file-pdf-o
+        | &nbsp;
+        | Export to pdf
     .clearfix
 
     hr

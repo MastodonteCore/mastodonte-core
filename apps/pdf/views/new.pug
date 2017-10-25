@@ -17,8 +17,14 @@ block content
           textarea.form-control#inputHtml(name="html", cols="30", rows="10")
       .form-group
         .col-sm-offset-2.col-sm-10
-          button.btn.btn-primary(type="submit") Send
-          a.btn.btn-default(href="/") Cancel
+          button.btn.btn-primary(type="submit")
+            i.fa.fa-check
+            | &nbsp;
+            | Send
+          a.btn.btn-default(href="/")
+            i.fa.fa-ban
+            | &nbsp;
+            | Cancel
 
 block scripts
   script(src="/pdf/js/main.js")

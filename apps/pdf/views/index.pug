@@ -5,12 +5,18 @@ block content
     h2 List PDFs
 
   .btn-group.btn-group-justified
-    a.btn.btn-primary(href='/pdf/new') New PDF
+    a.btn.btn-primary(href='/pdf/new')
+      i.fa.fa-plus
+      | &nbsp;
+      | New PDF
 
   hr
   .panel.panel-default
     .panel-heading
-      button.btn.btn-danger#btnPdfDelete Delete
+      button.btn.btn-danger#btnPdfDelete
+        i.fa.fa-eraser
+        | &nbsp;
+        | Delete
     table.table.table-striped.table-hover
       tbody
         each pdf in pdfs
