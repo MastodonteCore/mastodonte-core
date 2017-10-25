@@ -1,5 +1,5 @@
 const Promise = require('bluebird')
-const pdfService = require('../services/pdf')
+const { htmlToPdf, urlToPdf } = require('../services/pdf')
 const path = require('path');
 const fs = require('fs');
 
@@ -27,10 +27,16 @@ exports.getPdf = getPdf = (pdfName) => {
   })
 }
 
-exports.buildPdf = (req) => {
+exports.buildPdfByHtml = (req) => {
   const { html, title } = req.body;
 
-  return pdfService({ html, title });
+  return htmlToPdf({ html, title });
+}
+
+exports.buildPdfByUrl = (req) => {
+  const { url, title } = req.body;
+
+  return urlToPdf({ url, title });
 }
 
 exports.deletePdf = (req) => {
@@ -38,6 +44,6 @@ exports.deletePdf = (req) => {
 
   return Promise.all(pdfs.map(file => {
     return getPdf(file)
-      .then(pdfPath => fs.unlink(pdfPath))
+      .then(pdfPath => fs.unlinkSync(pdfPath))
   }))
 }

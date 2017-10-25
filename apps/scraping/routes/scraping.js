@@ -35,12 +35,17 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
+router.get('/:id/pdf', (req, res, next) => {
+  return scrapController.exportScrap(req.params.id)
+    .then((pdfPath) => res.sendFile(pdfPath))
+})
+
 router.post('/new', (req, res, next) => {
   return scrapController.postNew(req)
-    .then(() => res.redirect('/scraping'))
+    .then(() => res.redirect(scrapingApp.path()))
     .catch(errors => {
       req.flash('errors', errors);
-      return res.redirect('/scraping/new');
+      return res.redirect(`${scrapingApp.path}/new`);
     })
 })
 
@@ -52,25 +57,25 @@ router.get('/edit/:id', (req, res, next) => {
     }))
     .catch(error => {
       req.flash('errors', error);
-      return res.redirect('/scraping')
+      return res.redirect(scrapingApp.path())
     })
 })
 
 router.post('/edit/:id', (req, res, next) => {
-  return scrapController.postUpdate(req)
-    .then(() => res.redirect('/scraping'))
+  return scrapController.updateScrap(req)
+    .then(() => res.redirect(scrapingApp.path()))
     .catch(errors => {
       req.flash('errors', errors);
-      return res.redirect(`/scraping/edit/${req.params.id}`)
+      return res.redirect(`${scrapingApp.path()}/edit/${req.params.id}`)
     })
 })
 
-router.get('/delete/:id', (req, res, next) => {
-  return scrapController.getDelete(req)
-    .then(() => res.redirect('/scraping'))
+router.delete('/delete/:id', (req, res, next) => {
+  return scrapController.deleteScrap(req)
+    .then(() => res.redirect(scrapingApp.path()))
     .catch(errors => {
       req.flash('errors', errors);
-      return res.redirect(`/scraping/${req.params.id}`)
+      return res.redirect(`${scrapingApp.path()}/${req.params.id}`)
     })
 })
 

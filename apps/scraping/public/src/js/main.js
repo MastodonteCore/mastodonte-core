@@ -1,10 +1,16 @@
 $(document).ready(function () {
-  // Scraping
+  //View
+  $(document).on('click', '.btn-print', printView)
+  //New or Edit
   $(document).on('click', '#addField', addField)
   $(document).on('click', '.btn-remove-field', removeField)
 })
 
-export function addField() {
+function printView() {
+  window.print()
+}
+
+function addField() {
   const $this = $(this)
   const $parent = $this.closest('.form-group')
   const nbUnique = $('input[name^="unique"]').length;
@@ -40,7 +46,7 @@ export function addField() {
   `)
 }
 
-export function removeField() {
+function removeField() {
   const $this = $(this)
   const $parent = $this.closest('.form-group')
 

@@ -1,18 +1,18 @@
 const express = require('express');
-const app = express();
+global.accountApp = express();
 const path = require('path');
 const accountRoutes = require('./routes/account');
 const passport = require('passport');
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-app.use(passport.initialize());
-app.use(passport.session());
-app.use((req, res, next) => {
+accountApp.set('views', path.join(__dirname, 'views'));
+accountApp.set('view engine', 'pug');
+accountApp.use(passport.initialize());
+accountApp.use(passport.session());
+accountApp.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-app.use((req, res, next) => {
+accountApp.use((req, res, next) => {
   // After successful login, redirect back to the intended page
   if (!req.user &&
     req.path !== '/login' &&
@@ -27,6 +27,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', accountRoutes)
+accountApp.use('/', accountRoutes)
 
-module.exports = app;
+module.exports = accountApp;

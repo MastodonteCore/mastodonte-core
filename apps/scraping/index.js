@@ -1,12 +1,12 @@
 const express = require('express');
-const app = express();
+global.scrapingApp = express();
 const path = require('path');
 const scrapingRoutes = require('./routes/scraping');
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-app.use(express.static(path.join(__dirname, 'public/dist'), { maxAge: 31557600000 }));
+scrapingApp.set('views', path.join(__dirname, 'views'));
+scrapingApp.set('view engine', 'pug');
+scrapingApp.use(express.static(path.join(__dirname, 'public/dist'), { maxAge: 31557600000 }));
 
-app.use('/', scrapingRoutes)
+scrapingApp.use('/', scrapingRoutes)
 
-module.exports = app;
+module.exports = scrapingApp;

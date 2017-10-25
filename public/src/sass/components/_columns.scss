@@ -5,6 +5,15 @@
   }
 }
 
+@for $i from 1 through $max-columns {
+  .columns-print-#{$i} {
+    @media print {
+      column-count: $i;
+      column-gap: $column-gap;
+    }
+  }
+}
+
 @each $viewport, $size in $viewports-min {
   @for $i from 1 through $max-columns {
     .columns-#{$viewport}-#{$i} {

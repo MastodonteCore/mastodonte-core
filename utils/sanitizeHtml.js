@@ -17,6 +17,15 @@ const sanitizeHtmlOptions = {
           class: 'img-responsive'
         }
       }
+    },
+    'a': function (tagName, attribs) {
+      return {
+        tagName,
+        attribs: {
+          href: attribs.href,
+          target: '_blank'
+        }
+      }
     }
   }
 }

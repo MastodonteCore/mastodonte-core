@@ -29,14 +29,14 @@ exports.postLogin = (req, res, next) => {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/account/login');
+    return res.redirect(`${accountApp.path()}/login`);
   }
 
   passport.authenticate('local', (err, user, info) => {
     if (err) { return next(err); }
     if (!user) {
       req.flash('errors', info);
-      return res.redirect('/account/login');
+      return res.redirect(`${accountApp}/login`);
     }
     req.logIn(user, (err) => {
       if (err) { return next(err); }
@@ -82,7 +82,7 @@ exports.postSignup = (req, res, next) => {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/account/signup');
+    return res.redirect(`${accountApp.path()}/signup`);
   }
 
   const user = new User({
@@ -94,7 +94,7 @@ exports.postSignup = (req, res, next) => {
     if (err) { return next(err); }
     if (existingUser) {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
-      return res.redirect('/account/signup');
+      return res.redirect(`${accountApp.path()}/signup`);
     }
     user.save((err) => {
       if (err) { return next(err); }
@@ -130,7 +130,7 @@ exports.postUpdateProfile = (req, res, next) => {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/account');
+    return res.redirect(accountApp.path());
   }
 
   User.findById(req.user.id, (err, user) => {
@@ -144,12 +144,12 @@ exports.postUpdateProfile = (req, res, next) => {
       if (err) {
         if (err.code === 11000) {
           req.flash('errors', { msg: 'The email address you have entered is already associated with an account.' });
-          return res.redirect('/account');
+          return res.redirect(accountApp.path());
         }
         return next(err);
       }
       req.flash('success', { msg: 'Profile information has been updated.' });
-      res.redirect('/account');
+      res.redirect(accountApp.path());
     });
   });
 };
@@ -166,7 +166,7 @@ exports.postUpdatePassword = (req, res, next) => {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/account');
+    return res.redirect(accountApp.path());
   }
 
   User.findById(req.user.id, (err, user) => {
@@ -175,7 +175,7 @@ exports.postUpdatePassword = (req, res, next) => {
     user.save((err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: 'Password has been changed.' });
-      res.redirect('/account');
+      res.redirect(accountApp.path());
     });
   });
 };
@@ -206,7 +206,7 @@ exports.getOauthUnlink = (req, res, next) => {
     user.save((err) => {
       if (err) { return next(err); }
       req.flash('info', { msg: `${provider} account has been unlinked.` });
-      res.redirect('/account');
+      res.redirect(accountApp.path());
     });
   });
 };

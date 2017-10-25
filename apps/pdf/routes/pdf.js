@@ -17,35 +17,33 @@ router.get('/new', (req, res, next) => {
 })
 
 router.post('/new', (req, res, next) => {
-  return pdfController.buildPdf(req)
-    .then((pdfPath) => res.sendfile(pdfPath))
+  return pdfController.buildPdfByHtml(req)
+    .then((pdfPath) => res.sendFile(pdfPath))
 })
 
-router.post('/delete', (req, res, next) => {
+router.delete('/delete', (req, res, next) => {
   return pdfController.deletePdf(req)
-    .then(() => {
-      req.flash('success', 'PDF deleted with success')
-      return res.redirect('/pdf');
-    })
+    .then(() => res.send('PDF deleted with success'))
 })
 
-router.post('/api', (req, res, next) => {
-  return pdfController.buildPdf(req)
-    .then((pathPdf) => {
-      res.sendfile(pathPdf)
-    })
+router.post('/api/html', (req, res, next) => {
+  return pdfController.buildPdfByHtml(req)
+    .then((pathPdf) => res.sendFile(pathPdf))
 })
 
-router.post('/api/delete', (req, res, next) => {
+router.post('/api/url', (req, res, next) => {
+  return pdfController.buildPdfByUrl(req)
+    .then(() => res.status(200).end())
+})
+
+router.delete('/api/delete', (req, res, next) => {
   return pdfController.deletePdf(req)
-    .then(() => {
-      return res.status(200).end()
-    })
+    .then(() => res.status(200).end())
 })
 
 router.get('/:pdf_name', (req, res, next) => {
   return pdfController.getPdf(req.params.pdf_name)
-    .then((pdfPath) => res.sendfile(pdfPath))
+    .then((pdfPath) => res.sendFile(pdfPath))
 })
 
 module.exports = router;

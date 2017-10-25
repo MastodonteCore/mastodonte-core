@@ -1,6 +1,7 @@
 const Scrap = require('../models/Scrap')
 const Promise = require('bluebird')
 const scrapService = require('../services/scraping');
+const { htmlToPdf } = require('../../pdf/services/pdf');
 
 exports.getIndex = () => {
   return new Promise((resolve, reject) => {
@@ -20,7 +21,7 @@ exports.getScrap = getScrap = (id) => {
   })
 }
 
-exports.getScraping = (id) => {
+exports.getScraping = getScraping = (id) => {
   let scrapSelected;
 
   return getScrap(id)
@@ -30,6 +31,14 @@ exports.getScraping = (id) => {
       return scrapService(url, fields);
     })
     .then(html => ({ scrap: scrapSelected, html }))
+}
+
+exports.exportScrap = (id) => {
+  return getScraping(id)
+    .then(s => htmlToPdf({
+      title: s.scrap.name,
+      html: s.html
+    }))
 }
 
 exports.postNew = (req) => {
@@ -58,7 +67,7 @@ exports.postNew = (req) => {
   })
 }
 
-exports.postUpdate = (req) => {
+exports.updateScrap = (req) => {
   return new Promise((resolve, reject) => {
     const errors = validationScrap(req)
 
@@ -88,7 +97,7 @@ exports.postUpdate = (req) => {
   })
 }
 
-exports.getDelete = (req) => {
+exports.deleteScrap = (req) => {
   return new Promise((resolve, reject) => {
     Scrap.remove({ _id: req.params.id }, (err) => {
       if (err) return reject(err);

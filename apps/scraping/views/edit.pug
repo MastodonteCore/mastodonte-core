@@ -6,7 +6,7 @@ block content
 
   .well
     h4 Update the scrap
-    form(action="/scraping/edit/" + scrap._id, method="post")
+    form(action="/scraping/edit/" + scrap._id, method="POST")
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label(for="inputName") Name
