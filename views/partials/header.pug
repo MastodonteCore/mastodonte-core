@@ -12,10 +12,10 @@
         | Mastodonte
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        each app in appDirectories
-          if app.name !== "account"
+        each app in applications
+          if app !== "account"
             li
-              a(href="/" + app.name) !{app.name.toUpperCase()}
+              a(href="/" + app) !{app.toUpperCase()}
         li
           a(href='/status') Status
       ul.nav.navbar-nav.navbar-right

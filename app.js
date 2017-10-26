@@ -17,7 +17,7 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
-const { getDirectories } = require('./utils/fileSystem');
+const config = require('./package.json');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -28,11 +28,6 @@ dotenv.load({ path: '.env.example' });
  * Create Express server.
  */
 const app = express();
-
-/**
- * Apps directories
- */
-const appDirectories = getDirectories(path.join(__dirname, './apps'));
 
 /**
  * Connect to MongoDB.
@@ -79,7 +74,7 @@ app.use((req, res, next) => {
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
-  res.locals.appDirectories = appDirectories;
+  res.locals.applications = Object.keys(config.applications);
   next();
 })
 app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }));
@@ -93,7 +88,9 @@ app.use('/', routes);
 /**
  * Apps Routes
  */
-appDirectories.forEach(dir => app.use(`/${dir.name}`, require(`./apps/${dir.name}/index`)))
+for(let a in config.applications) {
+  app.use(`/${a}`, require(config.applications[a]))
+}
 
 /**
  * Error Handler.
