@@ -5,7 +5,7 @@ block content
     h2 New Pdf
 
   .well
-    form.form-horizontal(action="/pdf/new", method="post")
+    form.form-horizontal(action=baseurl + "/new", method="post")
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label.col-sm-2.control-label(for="inputTitle") Title document
@@ -27,4 +27,4 @@ block content
             | Cancel
 
 block scripts
-  script(src="/pdf/js/main.js")
+  script(src=baseurl + "/js/main.js")

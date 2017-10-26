@@ -6,7 +6,7 @@ block content
 
   .well
     h4 Add a new scrap
-    form(action="/scraping/new", method="post")
+    form(action=baseurl + "/new", method="post")
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label(for="inputName") Name
@@ -39,10 +39,10 @@ block content
           i.fa.fa-check
           | &nbsp;
           | Send
-        a.btn.btn-default(href="/scraping")
+        a.btn.btn-default(href=baseurl)
           i.fa.fa-ban
           | &nbsp;
           | Cancel
 
 block scripts
-  script(src="/scraping/js/main.js")
+  script(src=baseurl + "/js/main.js")

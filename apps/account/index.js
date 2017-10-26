@@ -27,6 +27,10 @@ app.use((req, res, next) => {
       }
   next();
 });
+app.use((req, res, next) => {
+  res.locals.baseurl = app.path();
+  next();
+});
 
 const routes = require('./routes/account')(app);
 app.use('/', routes)

@@ -5,7 +5,7 @@ block content
     h2 List PDFs
 
   .btn-group.btn-group-justified
-    a.btn.btn-primary(href='/pdf/new')
+    a.btn.btn-primary(href=baseurl + '/new')
       i.fa.fa-plus
       | &nbsp;
       | New PDF
@@ -24,7 +24,7 @@ block content
             td
               input(type="checkbox", value=pdf)
             td
-              a(href="/pdf/" + pdf )= pdf
+              a(href=baseurl + "/" + pdf )= pdf
 
 block scripts
-  script(src="/pdf/js/main.js")
+  script(src=baseurl + "/js/main.js")

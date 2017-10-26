@@ -13,11 +13,11 @@ block content
 
   .hidden-print
     .btn-group.btn-group-justified
-      a.btn.btn-primary(href="/scraping/edit/" + scrap._id)
+      a.btn.btn-primary(href=baseurl + "/edit/" + scrap._id)
         i.fa.fa-pencil-square-o
         | &nbsp;
         | Edit
-      a.btn.btn-danger(href="/scraping/delete/" + scrap._id)
+      a.btn.btn-danger(href=baseurl + "/delete/" + scrap._id)
         i.fa.fa-eraser
         | &nbsp;
         | Delete
@@ -29,7 +29,7 @@ block content
         i.fa.fa-print
         | &nbsp;
         | Print
-      a.btn.btn-default.btn-sm(href="/scraping/" + scrap._id + "/pdf")
+      a.btn.btn-default.btn-sm(href=baseurl + "/" + scrap._id + "/pdf")
         i.fa.fa-file-pdf-o
         | &nbsp;
         | Export to pdf
@@ -42,4 +42,4 @@ block content
       div !{el}
 
 block scripts
-  script(src="/scraping/js/main.js")
+  script(src=baseurl + "/js/main.js")

@@ -7,6 +7,10 @@ app.set('service', service);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public/dist'), { maxAge: 31557600000 }));
+app.use((req, res, next) => {
+  res.locals.baseurl = app.path();
+  next()
+});
 
 const pdfRoutes = require('./routes/pdf')(app);
 app.use('/', pdfRoutes);
