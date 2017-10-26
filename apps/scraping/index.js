@@ -1,12 +1,16 @@
 const express = require('express');
-global.scrapingApp = express();
+const app = express();
 const path = require('path');
-const scrapingRoutes = require('./routes/scraping');
+const service = require('./services/scraping');
+const model = require('./models/Scrap');
 
-scrapingApp.set('views', path.join(__dirname, 'views'));
-scrapingApp.set('view engine', 'pug');
-scrapingApp.use(express.static(path.join(__dirname, 'public/dist'), { maxAge: 31557600000 }));
+app.set('model', model);
+app.set('service', service);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public/dist'), { maxAge: 31557600000 }));
 
-scrapingApp.use('/', scrapingRoutes)
+const routes = require('./routes/scraping')(app);
+app.use('/', routes)
 
-module.exports = scrapingApp;
+module.exports = app;

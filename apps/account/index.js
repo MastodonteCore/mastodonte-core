@@ -1,32 +1,34 @@
 const express = require('express');
-global.accountApp = express();
+const app = express();
 const path = require('path');
-const accountRoutes = require('./routes/account');
 const passport = require('passport');
+const model = require('./models/User');
 
-accountApp.set('views', path.join(__dirname, 'views'));
-accountApp.set('view engine', 'pug');
-accountApp.use(passport.initialize());
-accountApp.use(passport.session());
-accountApp.use((req, res, next) => {
+app.set('model', model);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-accountApp.use((req, res, next) => {
+app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
   if (!req.user &&
     req.path !== '/login' &&
     req.path !== '/signup' &&
     !req.path.match(/^\/auth/) &&
     !req.path.match(/\./)) {
-    req.session.returnTo = req.path;
-  } else if (req.user &&
-    req.path === '/account') {
-    req.session.returnTo = req.path;
-  }
+      req.session.returnTo = req.path;
+    } else if (req.user &&
+      req.path === '/account') {
+        req.session.returnTo = req.path;
+      }
   next();
 });
 
-accountApp.use('/', accountRoutes)
+const routes = require('./routes/account')(app);
+app.use('/', routes)
 
-module.exports = accountApp;
+module.exports = app;

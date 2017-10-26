@@ -87,15 +87,13 @@ app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 315576000
 /**
  * Routes
  */
-app.get('/', (req, res, next) => res.render('home', {
-  title: 'Home'
-}))
+const routes = require('./routes/app')
+app.use('/', routes);
 
 /**
  * Apps Routes
  */
 appDirectories.forEach(dir => app.use(`/${dir.name}`, require(`./apps/${dir.name}/index`)))
-
 
 /**
  * Error Handler.
