@@ -2,7 +2,8 @@
   "name": "mastodonte-core",
   "version": "1.0.0",
   "description": "",
-  "author": "Olivier Monnier",
+  "url": "https://github.com/mastodontejs/mastodonte-core",
+  "repository": "https://github.com/mastodontejs/mastodonte-core",
   "license": "MIT",
   "scripts": {
     "start": "pm2 start ecosystem.config.js --env production",
@@ -16,7 +17,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
     "bcrypt-nodejs": "^0.0.3",
-    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "bootstrap-sass": "^3.3.7",
     "bootstrap-select": "^1.12.4",
@@ -92,9 +92,5 @@
       "chai-friendly"
     ]
   },
-  "applications": {
-    "account": "./apps/account",
-    "pdf": "./apps/pdf",
-    "scraping": "./apps/scraping"
-  }
+  "applications": {}
 }
