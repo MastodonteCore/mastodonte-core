@@ -1,7 +1,7 @@
 Mastodonte.js Core
 =======================
 
-[![Dependency Status](https://david-dm.org/mastodontejs/mastodonte-core.svg?style=flat)](https://david-dm.org/mastodontejs/mastodonte-core) [![Build Status]
+[![Dependency Status](https://david-dm.org/mastodontejs/mastodonte-core.svg?style=flat)](https://david-dm.org/mastodontejs/mastodonte-core)
 
 A boilerplate for **Node.js** web applications.
 
