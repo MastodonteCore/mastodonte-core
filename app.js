@@ -5,6 +5,7 @@ const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const nunjucks = require('nunjucks');
 const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
@@ -41,12 +42,19 @@ mongoose.connection.on('error', (err) => {
 });
 
 /**
+ * Configure Nunjucks
+ */
+nunjucks.configure('views', {
+  autoescape: true,
+  express: app
+});
+
+/**
  * Express configuration.
  */
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'html');
 app.set('layout', path.join(__dirname, './views/layout.pug'));
 app.use(expressStatusMonitor());
 app.use(compression());
@@ -75,7 +83,7 @@ app.use((req, res, next) => {
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
-  res.locals.applications = Object.keys(config.applications);
+  res.locals.applications = ['pdf'] //Object.keys(config.applications);
   next();
 })
 app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }));
