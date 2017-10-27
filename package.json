@@ -19,8 +19,6 @@
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.17.2",
     "bootstrap-sass": "^3.3.7",
-    "bootstrap-select": "^1.12.4",
-    "bootstrap-social": "^5.1.1",
     "bootswatch": "^3.3.7",
     "browserify": "^14.4.0",
     "chalk": "^2.1.0",

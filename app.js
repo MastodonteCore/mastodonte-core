@@ -47,6 +47,7 @@ app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.set('layout', path.join(__dirname, './views/layout.pug'));
 app.use(expressStatusMonitor());
 app.use(compression());
 app.use(logger('dev'));
@@ -89,7 +90,12 @@ app.use('/', routes);
  * Apps Routes
  */
 for(let a in config.applications) {
-  app.use(`/${a}`, require(config.applications[a]))
+  let obj = {};
+  const application = require(config.applications[a]);
+
+  obj[a] = runSafeApplication(a, application, app);
+  app.set('applications', Object.assign({}, app.get('applications'), obj))
+  app.use(`/${a}`, obj[a])
 }
 
 /**
@@ -106,3 +112,11 @@ app.listen(app.get('port'), () => {
 });
 
 module.exports = app;
+
+function runSafeApplication(name, app, args) {
+  try {
+    return app(args)
+  } catch (ex) {
+    return console.error(`[!] ${name} must be a function who return an instance app`)
+  }
+}

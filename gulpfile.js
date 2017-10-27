@@ -41,8 +41,6 @@ const jsPaths = {
 const vendorSrc = [
   './node_modules/jquery/dist/jquery.js',
   './node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
-  './node_modules/bootstrap-select/dist/js/bootstrap-select.js',
-  './node_modules/magnific-popup/dist/jquery.magnific-popup.js',
   './node_modules/notifyjs-browser/dist/notify.js'
 ]
 
