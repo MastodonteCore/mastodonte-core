@@ -55,7 +55,7 @@ nunjucks.configure('views', {
 app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('view engine', 'html');
-app.set('layout', path.join(__dirname, './views/layout.pug'));
+app.set('layout', path.join(__dirname, './views/layout.html'));
 app.use(expressStatusMonitor());
 app.use(compression());
 app.use(logger('dev'));
@@ -83,7 +83,7 @@ app.use((req, res, next) => {
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
-  res.locals.applications = ['pdf'] //Object.keys(config.applications);
+  res.locals.applications = Object.keys(config.applications);
   next();
 })
 app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }));
@@ -125,6 +125,6 @@ function runSafeApplication(name, app, args) {
   try {
     return app(args)
   } catch (ex) {
-    return console.error(`[!] ${name} must be a function who return an instance app`)
+    return console.error(`[!] ${name} must be a function who return an instance app Express`)
   }
 }
