@@ -83,6 +83,10 @@ app.use((req, res, next) => {
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
+  res.locals.layout = app.get('layout');
+  next();
+})
+app.use((req, res, next) => {
   res.locals.applications = Object.keys(config.applications);
   next();
 })
@@ -95,13 +99,20 @@ const routes = require('./routes/app')
 app.use('/', routes);
 
 /**
- * Apps Routes
+ * Init Apps
  */
 for(let a in config.applications) {
   let obj = {};
-  const application = require(config.applications[a]);
+  const appModule = require(config.applications[a]);
 
-  obj[a] = runSafeApplication(a, application, app);
+  obj[a] = runSafeApplication(a, appModule, app);
+
+  if (!obj[a].get('view engine')) {
+    nunjucks.configure([app.get('views'), obj[a].get('views')], {
+      autoescape: true,
+      express: obj[a]
+    });
+  }
   app.set('applications', Object.assign({}, app.get('applications'), obj))
   app.use(`/${a}`, obj[a])
 }
