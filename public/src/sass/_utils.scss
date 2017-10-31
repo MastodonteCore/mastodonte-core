@@ -1,15 +1,21 @@
 .no-margin {
-  &.top, &-top { margin-top: 0; }
-  &.right, &-right { margin-right: 0; }
-  &.bottom, &-bottom { margin-bottom: 0; }
-  &.left, &-left { margin-left: 0; }
+  margin: 0;
+
+  @each $side in $sides {
+    &.#{$side}, &-#{side} {
+      margin-#{$side}: 0;
+    }
+  }
 }
 
 .no-padding {
-  &.top, &-top { padding-top: 0; }
-  &.right, &-right { padding-right: 0; }
-  &.bottom, &-bottom { padding-bottom: 0; }
-  &.left, &-left { padding-left: 0; }
+  padding: 0;
+
+  @each $side in $sides {
+    &.#{$side}, &-#{$side} {
+      padding-#{$side}: 0;
+    }
+  }
 }
 
 .row.no-gutters {
