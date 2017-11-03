@@ -2,6 +2,7 @@ Mastodonte.js Core
 =======================
 
 [![Dependency Status](https://david-dm.org/mastodontejs/mastodonte-core.svg?style=flat)](https://david-dm.org/mastodontejs/mastodonte-core)
+[![Build Status](https://travis-ci.org/mastodontejs/core.svg?branch=master)](https://travis-ci.org/mastodontejs/core)
 
 A boilerplate for **Node.js** web applications.
 
@@ -66,13 +67,6 @@ npm install
 # Then simply start your app
 node app.js
 ```
-
-**Note:** I highly recommend installing [Nodemon](https://github.com/remy/nodemon).
-It watches for any changes in your  node.js app and automatically restarts the
-server. Once installed, instead of `node app.js` use `nodemon app.js`. It will
-save you a lot of time in the long run, because you won't need to manually
-restart the server each time you make a small change in code. To install, run
-`sudo npm install -g nodemon`.
 
 Project Structure
 -----------------
