@@ -73,13 +73,7 @@ app.use(session({
   })
 }));
 app.use(flash());
-app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
-    next();
-  } else {
-    lusca.csrf()(req, res, next);
-  }
-});
+app.use(lusca.csrf());
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
@@ -136,6 +130,6 @@ function runSafeApplication(name, app, args) {
   try {
     return app(args)
   } catch (ex) {
-    return console.error(`[!] ${name} must be a function who return an instance app Express`)
+    return console.error(`[!] ${name} must be a function who return an instance app`)
   }
 }
