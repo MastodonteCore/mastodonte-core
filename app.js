@@ -96,7 +96,7 @@ app.use(
 /**
  * Routes
  */
-const routes = require('./routes/app');
+const routes = require('./routes');
 app.use('/', routes);
 
 /**
