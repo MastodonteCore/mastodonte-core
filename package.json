@@ -4,7 +4,9 @@
   "description": "",
   "url": "https://github.com/mastodontejs/mastodonte-core",
   "repository": "https://github.com/mastodontejs/mastodonte-core",
+  "author": "Olivier Monnier <omonnier.dev@gmail.com>",
   "license": "MIT",
+  "main": "app.js",
   "scripts": {
     "start": "pm2 start ecosystem.config.js --env production",
     "test": "mocha --reporter spec",
