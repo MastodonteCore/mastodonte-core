@@ -14,11 +14,11 @@ const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const path = require('path');
-const fs = require('fs');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const config = require('./package.json');
+const runSafeApplication = require('./lib/runSafeApplication');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -35,11 +35,12 @@ const app = express();
  */
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-mongoose.connection.on('error', err => {
-  console.error(err);
+mongoose.connection.on('error', (err) => {
+  console.error(err); // eslint-disable-line no-console
+  /* eslint-disable no-console */
   console.log(
     '%s MongoDB connection error. Please make sure MongoDB is running.',
-    chalk.red('✗')
+    chalk.red('✗'),
   );
   process.exit();
 });
@@ -49,7 +50,7 @@ mongoose.connection.on('error', err => {
  */
 nunjucks.configure('views', {
   autoescape: true,
-  express: app
+  express: app,
 });
 
 /**
@@ -73,9 +74,9 @@ app.use(
     store: new MongoStore({
       url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
       autoReconnect: true,
-      clear_interval: 3600
-    })
-  })
+      clear_interval: 3600,
+    }),
+  }),
 );
 app.use(flash());
 app.use(lusca.csrf());
@@ -90,32 +91,30 @@ app.use((req, res, next) => {
   next();
 });
 app.use(
-  express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 })
+  express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }),
 );
 
 /**
  * Routes
  */
 const routes = require('./routes');
+
 app.use('/', routes);
 
 /**
  * Init Apps
  */
-for (let a in config.applications) {
-  const appModule = require(config.applications[a]);
+const appModules = Object.keys(config.applications);
 
-  const instanceApp = runSafeApplication(a, appModule, app);
+appModules.forEach((a) => {
+  const instanceApp = runSafeApplication(a, config.applications, app);
 
   if (!instanceApp.get('view engine')) {
-    nunjucks.configure([app.get('views'), instanceApp.get('views')], {
-      autoescape: true,
-      express: instanceApp
-    });
+    nunjucks.configure([app.get('views'), instanceApp.get('views')], { autoescape: true, express: instanceApp });
   }
 
   app.use(`/${a}`, instanceApp);
-}
+});
 
 /**
  * Error Handler.
@@ -130,19 +129,9 @@ app.listen(app.get('port'), () => {
     '%s App is running at http://localhost:%d in %s mode',
     chalk.green('✓'),
     app.get('port'),
-    app.get('env')
+    app.get('env'),
   );
   console.log('  Press CTRL-C to stop\n');
 });
 
 module.exports = app;
-
-function runSafeApplication(name, app, args) {
-  try {
-    return app(args);
-  } catch (ex) {
-    return console.error(
-      `[!] ${name} must be a function who return an instance app`
-    );
-  }
-}

@@ -3,35 +3,35 @@ module.exports = {
    * Application configuration section
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
-  apps : [
+  apps: [
 
     // First application
     {
-      name      : "Mastodonte",
-      script    : "app.js",
+      name: 'Mastodonte',
+      script: 'app.js',
       watch: true,
       ignore_watch: [
-        "node_modules"
+        'node_modules',
       ],
-      max_memory_restart: "20M",
-      out_file: "logs/out.log",
-      error_file: "logs/err.log",
+      max_memory_restart: '20M',
+      out_file: 'logs/out.log',
+      error_file: 'logs/err.log',
       env: {
-        NODE_ENV: "development",
-        PORT: "8080"
+        NODE_ENV: 'development',
+        PORT: '8080',
       },
-      env_production : {
-        NODE_ENV: "production",
-        PORT: "8000"
-      }
-    }
-  ]
+      env_production: {
+        NODE_ENV: 'production',
+        PORT: '8000',
+      },
+    },
+  ],
 
   /**
    * Deployment section
    * http://pm2.keymetrics.io/docs/usage/deployment/
    */
-  /*deploy : {
+  /* deploy : {
     production : {
       user : "node",
       host : "212.83.163.1",
@@ -51,5 +51,5 @@ module.exports = {
         NODE_ENV: "dev"
       }
     }
-  }*/
-}
+  } */
+};
