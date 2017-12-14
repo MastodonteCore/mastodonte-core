@@ -19,7 +19,7 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const config = require('./package.json');
 const runSafeModule = require('./lib/runSafeModule');
-const attachToExpressModule = require('attachToExpressModule');
+const attachToExpressModule = require('./lib/attachToExpressModule');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -110,7 +110,7 @@ const appModules = Object.keys(config.applications);
 appModules.forEach((appName) => {
   const instanceApp = runSafeModule(appName, config.applications, app);
 
-  attachToExpressModule(app, instanceApp);
+  attachToExpressModule(app, instanceApp, appName);
 });
 
 /**
