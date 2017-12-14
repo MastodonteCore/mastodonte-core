@@ -60,3 +60,5 @@ typings/
 # OS metadata
 .DS_Store
 Thumbs.db
+
+public/dist
