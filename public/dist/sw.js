@@ -19,57 +19,57 @@ importScripts('workbox-sw.prod.v2.1.1.js');
  */
 const fileManifest = [
   {
-    url: 'css/main.css',
-    revision: '8f7979d46c2b9bfec85c68761dcf0b5a',
+    "url": "css/main.css",
+    "revision": "e34585b0bff40ebcb065b8d096b12fba"
   },
   {
-    url: 'fonts/bootstrap/glyphicons-halflings-regular.eot',
-    revision: 'f4769f9bdb7466be65088239c12046d1',
+    "url": "fonts/bootstrap/glyphicons-halflings-regular.eot",
+    "revision": "f4769f9bdb7466be65088239c12046d1"
   },
   {
-    url: 'fonts/bootstrap/glyphicons-halflings-regular.svg',
-    revision: '89889688147bd7575d6327160d64e760',
+    "url": "fonts/bootstrap/glyphicons-halflings-regular.svg",
+    "revision": "89889688147bd7575d6327160d64e760"
   },
   {
-    url: 'fonts/bootstrap/glyphicons-halflings-regular.ttf',
-    revision: 'e18bbf611f2a2e43afc071aa2f4e1512',
+    "url": "fonts/bootstrap/glyphicons-halflings-regular.ttf",
+    "revision": "e18bbf611f2a2e43afc071aa2f4e1512"
   },
   {
-    url: 'fonts/bootstrap/glyphicons-halflings-regular.woff',
-    revision: 'fa2772327f55d8198301fdb8bcfc8158',
+    "url": "fonts/bootstrap/glyphicons-halflings-regular.woff",
+    "revision": "fa2772327f55d8198301fdb8bcfc8158"
   },
   {
-    url: 'fonts/bootstrap/glyphicons-halflings-regular.woff2',
-    revision: '448c34a56d699c29117adc64c43affeb',
+    "url": "fonts/bootstrap/glyphicons-halflings-regular.woff2",
+    "revision": "448c34a56d699c29117adc64c43affeb"
   },
   {
-    url: 'fonts/fontAwesome/fontawesome-webfont.eot',
-    revision: '674f50d287a8c48dc19ba404d20fe713',
+    "url": "fonts/fontAwesome/fontawesome-webfont.eot",
+    "revision": "674f50d287a8c48dc19ba404d20fe713"
   },
   {
-    url: 'fonts/fontAwesome/fontawesome-webfont.svg',
-    revision: '912ec66d7572ff821749319396470bde',
+    "url": "fonts/fontAwesome/fontawesome-webfont.svg",
+    "revision": "912ec66d7572ff821749319396470bde"
   },
   {
-    url: 'fonts/fontAwesome/fontawesome-webfont.ttf',
-    revision: 'b06871f281fee6b241d60582ae9369b9',
+    "url": "fonts/fontAwesome/fontawesome-webfont.ttf",
+    "revision": "b06871f281fee6b241d60582ae9369b9"
   },
   {
-    url: 'fonts/fontAwesome/fontawesome-webfont.woff',
-    revision: 'fee66e712a8a08eef5805a46892932ad',
+    "url": "fonts/fontAwesome/fontawesome-webfont.woff",
+    "revision": "fee66e712a8a08eef5805a46892932ad"
   },
   {
-    url: 'fonts/fontAwesome/fontawesome-webfont.woff2',
-    revision: 'af7ae505a9eed503f8b8e6982036873e',
+    "url": "fonts/fontAwesome/fontawesome-webfont.woff2",
+    "revision": "af7ae505a9eed503f8b8e6982036873e"
   },
   {
-    url: 'js/main.js',
-    revision: 'cfd901c60a0c06809b032dd91c2eba58',
+    "url": "js/main.js",
+    "revision": "cfd901c60a0c06809b032dd91c2eba58"
   },
   {
-    url: 'js/vendors.js',
-    revision: '858f9efb08e6c121b7b9e416f02da94a',
-  },
+    "url": "js/vendors.js",
+    "revision": "858f9efb08e6c121b7b9e416f02da94a"
+  }
 ];
 
 const workboxSW = new self.WorkboxSW();

@@ -143,6 +143,5 @@ gulp.task('server', ['dependencies-status', 'build'], () => {
 gulp.task('build', () => runSequence(
   'clean',
   ['images', 'styles', 'js', 'vendors', 'fonts', 'copy'],
-  'bundle-sw',
-),
-);
+  'bundle-sw'
+));
