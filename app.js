@@ -18,7 +18,8 @@ const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const config = require('./package.json');
-const runSafeApplication = require('./lib/runSafeApplication');
+const runSafeModule = require('./lib/runSafeModule');
+const attachToExpressModule = require('attachToExpressModule');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -102,18 +103,14 @@ const routes = require('./routes');
 app.use('/', routes);
 
 /**
- * Init Apps
+ * Init Apps Modules
  */
 const appModules = Object.keys(config.applications);
 
-appModules.forEach((a) => {
-  const instanceApp = runSafeApplication(a, config.applications, app);
+appModules.forEach((appName) => {
+  const instanceApp = runSafeModule(appName, config.applications, app);
 
-  if (!instanceApp.get('view engine')) {
-    nunjucks.configure([app.get('views'), instanceApp.get('views')], { autoescape: true, express: instanceApp });
-  }
-
-  app.use(`/${a}`, instanceApp);
+  attachToExpressModule(app, instanceApp);
 });
 
 /**
