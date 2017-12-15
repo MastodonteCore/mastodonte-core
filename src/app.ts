@@ -1,7 +1,7 @@
 /**
  * Module dependencies.
  */
-const express = require('express');
+import * as express from 'express';
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -17,14 +17,14 @@ const path = require('path');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
-const config = require('./package.json');
+const config = require('../package.json');
 const runSafeModule = require('./lib/runSafeModule');
 const attachToExpressModule = require('./lib/attachToExpressModule');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.load({ path: '.env.example' });
+dotenv.load({ path: path.join(__dirname, '../.env.example') });
 
 /**
  * Create Express server.
@@ -36,13 +36,10 @@ const app = express();
  */
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-mongoose.connection.on('error', (err) => {
+mongoose.connection.on('error', err => {
   console.error(err); // eslint-disable-line no-console
   /* eslint-disable no-console */
-  console.log(
-    '%s MongoDB connection error. Please make sure MongoDB is running.',
-    chalk.red('✗'),
-  );
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
   process.exit();
 });
 
@@ -51,7 +48,7 @@ mongoose.connection.on('error', (err) => {
  */
 nunjucks.configure('views', {
   autoescape: true,
-  express: app,
+  express: app
 });
 
 /**
@@ -75,9 +72,9 @@ app.use(
     store: new MongoStore({
       url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
       autoReconnect: true,
-      clear_interval: 3600,
-    }),
-  }),
+      clear_interval: 3600
+    })
+  })
 );
 app.use(flash());
 app.use(lusca.csrf());
@@ -91,9 +88,7 @@ app.use((req, res, next) => {
   res.locals.applications = Object.keys(config.applications);
   next();
 });
-app.use(
-  express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }),
-);
+app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }));
 
 /**
  * Routes
@@ -107,7 +102,7 @@ app.use('/', routes);
  */
 const appModules = Object.keys(config.applications);
 
-appModules.forEach((appName) => {
+appModules.forEach(appName => {
   const instanceApp = runSafeModule(appName, config.applications, app);
 
   attachToExpressModule(app, instanceApp, appName);
@@ -122,12 +117,7 @@ app.use(errorHandler());
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log(
-    '%s App is running at http://localhost:%d in %s mode',
-    chalk.green('✓'),
-    app.get('port'),
-    app.get('env'),
-  );
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
 

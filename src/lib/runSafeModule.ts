@@ -1,5 +1,5 @@
 const path = require('path');
-const run = require('../utils/run');
+import * as run from '../utils/run';
 const runSafely = require('../utils/runSafely');
 
 function runSafeModule(name, apps, args) {

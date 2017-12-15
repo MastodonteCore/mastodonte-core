@@ -7,6 +7,7 @@ const gulpif = require('gulp-if');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const imagemin = require('gulp-imagemin');
+const ts = require('gulp-typescript');
 const gls = require('gulp-live-server');
 const exec = require('child_process').exec;
 const del = require('del');
@@ -18,25 +19,26 @@ const runSequence = require('run-sequence');
 const wbBuild = require('workbox-build');
 
 const isEnvProduction = process.NODE_ENV === 'production';
+const tsProject = ts.createProject('tsconfig.json')
 
 const dirs = {
-  src: 'public/src',
-  dest: 'public/dist',
+  src: 'src',
+  dest: 'dist',
 };
 
 const imagesPath = {
-  src: `${dirs.src}/images/**/*`,
-  dest: `${dirs.dest}/images/`,
+  src: `${dirs.src}/public/images/**/*`,
+  dest: `${dirs.dest}/public/images/`,
 };
 
 const sassPaths = {
-  src: `${dirs.src}/sass/main.scss`,
-  dest: `${dirs.dest}/css/`,
+  src: `${dirs.src}/public/sass/main.scss`,
+  dest: `${dirs.dest}/public/css/`,
 };
 
 const jsPaths = {
-  src: `${dirs.src}/js/main.js`,
-  dest: `${dirs.dest}/js/`,
+  src: `${dirs.src}/public/js/main.js`,
+  dest: `${dirs.dest}/public/js/`,
 };
 
 const vendorSrc = [
@@ -45,22 +47,22 @@ const vendorSrc = [
 ];
 
 const cleanFolders = [
-  'public/dist',
+  'dist',
 ];
 
-const filesToCopy = [
-  `${dirs.src}/favicon.png`,
-  `${dirs.src}/sw.js`,
-];
+const filesToCopy = {
+  public: [`${dirs.src}/public/favicon.png`, `${dirs.src}/public/sw.js`],
+  views: `${dirs.src}/views/**/*`
+};
 
 const fontsPaths = {
   fontAwesome: {
     src: './node_modules/font-awesome/fonts/**/*',
-    dest: `${dirs.dest}/fonts/fontAwesome/`,
+    dest: `${dirs.dest}/public/fonts/fontAwesome/`,
   },
   bootstrap: {
     src: './node_modules/bootstrap-sass/assets/fonts/bootstrap/**/*',
-    dest: `${dirs.dest}/fonts/bootstrap/`,
+    dest: `${dirs.dest}/public/fonts/bootstrap/`,
   },
 };
 
@@ -75,6 +77,10 @@ gulp.task('clean', () => del(cleanFolders));
 gulp.task('images', () => gulp.src(imagesPath.src)
   .pipe(imagemin())
   .pipe(gulp.dest(imagesPath.dest)));
+
+gulp.task('ts:backend', () => tsProject.src()
+  .pipe(tsProject())
+  .js.pipe(gulp.dest('dist')));
 
 gulp.task('styles', () => gulp.src(sassPaths.src)
   .pipe(sourcemaps.init())
@@ -108,12 +114,17 @@ gulp.task('vendors', () => gulp.src(vendorSrc)
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(jsPaths.dest)));
 
-gulp.task('copy', () => gulp.src(filesToCopy)
-  .pipe(gulp.dest(dirs.dest)));
+gulp.task('copy:public', () => gulp.src(filesToCopy.public)
+  .pipe(gulp.dest(`${dirs.dest}/public`)));
+
+gulp.task('copy:views', () => gulp.src(filesToCopy.views)
+  .pipe(gulp.dest(`${dirs.dest}/views`)));
+
+gulp.task('copy', ['copy:public', 'copy:views']);
 
 gulp.task('bundle-sw', () => wbBuild.generateSW({
-  globDirectory: './public/dist/',
-  swDest: './public/dist/sw.js',
+  globDirectory: './dist/public/',
+  swDest: './dist/public/sw.js',
   globPatterns: ['**/*.{html,js,css,eot,svg,ttf,woff,woff2}'],
 })
   .then(() => {
@@ -131,16 +142,17 @@ gulp.task('fonts:bootstrap', () => gulp.src(fontsPaths.bootstrap.src)
 
 gulp.task('fonts', ['fonts:fontAwesome', 'fonts:bootstrap']);
 
-gulp.task('server', ['build'], () => {
-  const server = gls.new('./app.js');
+gulp.task('server', () => {
+  const server = gls.new(`./${dirs.dest}/app.js`);
 
   server.start();
-  gulp.watch(`${dirs.src}/sass/**/*.scss`, ['styles', 'bundle-sw']);
-  gulp.watch(`${dirs.src}/js/**/*.js`, ['js', 'bundle-sw']);
+  gulp.watch(`${dirs.src}/public/sass/**/*.scss`, ['styles', 'bundle-sw']);
+  gulp.watch(`${dirs.src}/public/js/**/*.js`, ['js', 'bundle-sw']);
 });
 
 gulp.task('build', () => runSequence(
-  'clean',
+  'clean', 
+  'ts:backend',
   ['images', 'styles', 'js', 'vendors', 'fonts', 'copy'],
   'bundle-sw'
 ));
