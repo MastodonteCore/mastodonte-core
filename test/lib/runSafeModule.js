@@ -1,6 +1,6 @@
 const express = require('express');
 const { expect } = require('chai');
-const runSafeModule = require('../lib/runSafeModule');
+const runSafeModule = require('../../lib/runSafeModule');
 
 const apps = {
   goodApp: 'test/fixtures/expressModule',
@@ -12,10 +12,8 @@ describe('runSafeModule', () => {
     expect(runSafeModule([], [])).to.be.an('undefined');
     expect(runSafeModule('', '')).to.be.an('undefined');
     expect(runSafeModule('foo', apps)).to.be.an('undefined');
+    expect(runSafeModule('wrongApp', apps)).to.be.an('undefined');
   });
-  it('should error if express module no exist', () => {
-    expect(runSafeModule('wrongApp', apps)).to.Throw;
-  })
   it('should return an function', () => {
     expect(typeof runSafeModule('goodApp', apps)).to.be.equal('function');
   });
