@@ -41,8 +41,7 @@ const jsPaths = {
 
 const vendorSrc = [
   './node_modules/jquery/dist/jquery.js',
-  './node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
-  './node_modules/notifyjs-browser/dist/notify.js',
+  './node_modules/bootstrap-sass/assets/javascripts/bootstrap.js'
 ];
 
 const cleanFolders = [
@@ -132,7 +131,7 @@ gulp.task('fonts:bootstrap', () => gulp.src(fontsPaths.bootstrap.src)
 
 gulp.task('fonts', ['fonts:fontAwesome', 'fonts:bootstrap']);
 
-gulp.task('server', ['dependencies-status', 'build'], () => {
+gulp.task('server', ['build'], () => {
   const server = gls.new('./app.js');
 
   server.start();
