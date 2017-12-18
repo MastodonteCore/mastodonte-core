@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const run = require('../../utils/run');
+const run = require('../../dist/utils/run').default;
 
 describe('run', () => {
   it('should return undefined when not function', () => {

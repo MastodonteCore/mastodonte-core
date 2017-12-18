@@ -1,4 +1,4 @@
-module.exports = function runSafely(fn) {
+export default function runSafely(fn: Function) {
   try {
     return fn();
   } catch (e) {

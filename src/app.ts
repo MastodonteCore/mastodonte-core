@@ -1,30 +1,32 @@
 /**
  * Module dependencies.
  */
-const express = require('express');
-const compression = require('compression');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const nunjucks = require('nunjucks');
-const logger = require('morgan');
-const chalk = require('chalk');
-const errorHandler = require('errorhandler');
-const lusca = require('lusca');
-const dotenv = require('dotenv');
-const MongoStore = require('connect-mongo')(session);
-const flash = require('express-flash');
-const path = require('path');
-const mongoose = require('mongoose');
-const expressValidator = require('express-validator');
-const expressStatusMonitor = require('express-status-monitor');
-const config = require('./package.json');
-const runSafeModule = require('./lib/runSafeModule');
-const attachToExpressModule = require('./lib/attachToExpressModule');
+import * as express from 'express';
+import * as  compression from 'compression';
+import * as session from 'express-session';
+import * as bodyParser from 'body-parser';
+import * as nunjucks from 'nunjucks';
+import * as logger from 'morgan';
+import chalk from 'chalk';
+import * as errorHandler from 'errorhandler';
+import * as lusca from 'lusca';
+import * as dotenv from 'dotenv';
+import * as connectMongo from 'connect-mongo';
+import * as flash from 'express-flash';
+import * as path from 'path';
+import * as mongoose from 'mongoose';
+import * as expressValidator from 'express-validator';
+import * as expressStatusMonitor from 'express-status-monitor';
+const config = require('../package.json');
+import runSafeModule from './lib/runSafeModule';
+import attachToExpressModule from './lib/attachToExpressModule';
+
+const MongoStore = connectMongo(session)
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.load({ path: '.env.example' });
+dotenv.load({ path: path.join(__dirname, '../.env.example') });
 
 /**
  * Create Express server.
@@ -36,22 +38,19 @@ const app = express();
  */
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-mongoose.connection.on('error', (err) => {
+mongoose.connection.on('error', err => {
   console.error(err); // eslint-disable-line no-console
   /* eslint-disable no-console */
-  console.log(
-    '%s MongoDB connection error. Please make sure MongoDB is running.',
-    chalk.red('✗'),
-  );
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
   process.exit();
 });
 
 /**
  * Configure Nunjucks
  */
-nunjucks.configure('views', {
+nunjucks.configure(path.join(__dirname, 'views'), {
   autoescape: true,
-  express: app,
+  express: app
 });
 
 /**
@@ -75,9 +74,9 @@ app.use(
     store: new MongoStore({
       url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
       autoReconnect: true,
-      clear_interval: 3600,
-    }),
-  }),
+      clear_interval: 3600
+    })
+  })
 );
 app.use(flash());
 app.use(lusca.csrf());
@@ -91,14 +90,12 @@ app.use((req, res, next) => {
   res.locals.applications = Object.keys(config.applications);
   next();
 });
-app.use(
-  express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }),
-);
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 /**
  * Routes
  */
-const routes = require('./routes');
+import routes from './routes';
 
 app.use('/', routes);
 
@@ -107,7 +104,7 @@ app.use('/', routes);
  */
 const appModules = Object.keys(config.applications);
 
-appModules.forEach((appName) => {
+appModules.forEach(appName => {
   const instanceApp = runSafeModule(appName, config.applications, app);
 
   attachToExpressModule(app, instanceApp, appName);
@@ -122,12 +119,7 @@ app.use(errorHandler());
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log(
-    '%s App is running at http://localhost:%d in %s mode',
-    chalk.green('✓'),
-    app.get('port'),
-    app.get('env'),
-  );
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });
 

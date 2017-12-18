@@ -1,9 +1,9 @@
 const express = require('express');
 const { expect } = require('chai');
-const runSafeModule = require('../../lib/runSafeModule');
+const runSafeModule = require('../../dist/lib/runSafeModule').default;
 
 const apps = {
-  goodApp: 'test/fixtures/expressModule',
+  goodApp: '../test/fixtures/expressModule',
   wrongApp: './foo'
 }
 

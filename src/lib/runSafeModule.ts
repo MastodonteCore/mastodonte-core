@@ -1,8 +1,8 @@
 const path = require('path');
-const run = require('../utils/run');
-const runSafely = require('../utils/runSafely');
+import run from '../utils/run';
+import runSafely from '../utils/runSafely';
 
-function runSafeModule(name, apps, args) {
+export default function runSafeModule(name, apps, args) {
   if (typeof name === 'string' && typeof apps === 'object' && apps[name]) {
     const modPath = path.join(__dirname, '..', apps[name]);
     /* eslint-disable global-require, import/no-dynamic-require */
@@ -12,5 +12,3 @@ function runSafeModule(name, apps, args) {
   }
   return undefined;
 }
-
-module.exports = runSafeModule;

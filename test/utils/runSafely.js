@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const runSafely = require('../../utils/runSafely');
+const runSafely = require('../../dist/utils/runSafely').default;
 
 describe('runSafely', () => {
   it('should return undefined when function return an error', () => {
