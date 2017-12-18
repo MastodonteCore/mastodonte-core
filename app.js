@@ -17,9 +17,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
-const config = require('./package.json');
-const runSafeModule = require('./lib/runSafeModule');
-const attachToExpressModule = require('./lib/attachToExpressModule');
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -87,10 +84,6 @@ app.use((req, res, next) => {
   res.locals.layout = app.get('layout');
   next();
 });
-app.use((req, res, next) => {
-  res.locals.applications = Object.keys(config.applications);
-  next();
-});
 app.use(
   express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }),
 );
@@ -101,17 +94,6 @@ app.use(
 const routes = require('./routes');
 
 app.use('/', routes);
-
-/**
- * Init Apps Modules
- */
-const appModules = Object.keys(config.applications);
-
-appModules.forEach((appName) => {
-  const instanceApp = runSafeModule(appName, config.applications, app);
-
-  attachToExpressModule(app, instanceApp, appName);
-});
 
 /**
  * Error Handler.
