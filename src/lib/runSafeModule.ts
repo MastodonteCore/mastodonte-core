@@ -1,6 +1,6 @@
 const path = require('path');
 import run from '../utils/run';
-const runSafely = require('../utils/runSafely');
+import runSafely from '../utils/runSafely';
 
 export default function runSafeModule(name, apps, args) {
   if (typeof name === 'string' && typeof apps === 'object' && apps[name]) {
