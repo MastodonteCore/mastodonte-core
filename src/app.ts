@@ -2,24 +2,26 @@
  * Module dependencies.
  */
 import * as express from 'express';
-const compression = require('compression');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const nunjucks = require('nunjucks');
-const logger = require('morgan');
-const chalk = require('chalk');
-const errorHandler = require('errorhandler');
-const lusca = require('lusca');
-const dotenv = require('dotenv');
-const MongoStore = require('connect-mongo')(session);
-const flash = require('express-flash');
-const path = require('path');
-const mongoose = require('mongoose');
-const expressValidator = require('express-validator');
-const expressStatusMonitor = require('express-status-monitor');
+import * as  compression from 'compression';
+import * as session from 'express-session';
+import * as bodyParser from 'body-parser';
+import * as nunjucks from 'nunjucks';
+import * as logger from 'morgan';
+import * as chalk from 'chalk';
+import * as errorHandler from 'errorhandler';
+import * as lusca from 'lusca';
+import * as dotenv from 'dotenv';
+import * as connectMongo from 'connect-mongo';
+import * as flash from 'express-flash';
+import * as path from 'path';
+import * as mongoose from 'mongoose';
+import * as expressValidator from 'express-validator';
+import * as expressStatusMonitor from 'express-status-monitor';
 const config = require('../package.json');
-const runSafeModule = require('./lib/runSafeModule');
-const attachToExpressModule = require('./lib/attachToExpressModule');
+import * as runSafeModule from './lib/runSafeModule';
+import * as attachToExpressModule from './lib/attachToExpressModule';
+
+const MongoStore = connectMongo(session)
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.

@@ -8,4 +8,4 @@ function attachToExpressModule(core, module, appName = '') {
   core.use(`/${appName}`, module);
 }
 
-module.exports = attachToExpressModule;
+export default attachToExpressModule;
