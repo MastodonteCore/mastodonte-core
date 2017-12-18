@@ -7,7 +7,7 @@ import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
 import * as nunjucks from 'nunjucks';
 import * as logger from 'morgan';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as errorHandler from 'errorhandler';
 import * as lusca from 'lusca';
 import * as dotenv from 'dotenv';
@@ -18,8 +18,8 @@ import * as mongoose from 'mongoose';
 import * as expressValidator from 'express-validator';
 import * as expressStatusMonitor from 'express-status-monitor';
 const config = require('../package.json');
-import * as runSafeModule from './lib/runSafeModule';
-import * as attachToExpressModule from './lib/attachToExpressModule';
+import runSafeModule from './lib/runSafeModule';
+import attachToExpressModule from './lib/attachToExpressModule';
 
 const MongoStore = connectMongo(session)
 
@@ -48,7 +48,7 @@ mongoose.connection.on('error', err => {
 /**
  * Configure Nunjucks
  */
-nunjucks.configure('views', {
+nunjucks.configure(path.join(__dirname, 'views'), {
   autoescape: true,
   express: app
 });
@@ -90,12 +90,12 @@ app.use((req, res, next) => {
   res.locals.applications = Object.keys(config.applications);
   next();
 });
-app.use(express.static(path.join(__dirname, 'public/dist/'), { maxAge: 31557600000 }));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 /**
  * Routes
  */
-const routes = require('./routes');
+import routes from './routes';
 
 app.use('/', routes);
 

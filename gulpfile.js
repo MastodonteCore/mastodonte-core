@@ -146,6 +146,7 @@ gulp.task('server', () => {
   const server = gls.new(`./${dirs.dest}/app.js`);
 
   server.start();
+  gulp.watch(`${dirs.src}/**/*.ts`, ['ts:backend']);
   gulp.watch(`${dirs.src}/public/sass/**/*.scss`, ['styles', 'bundle-sw']);
   gulp.watch(`${dirs.src}/public/js/**/*.js`, ['js', 'bundle-sw']);
 });
