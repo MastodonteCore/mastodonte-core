@@ -33,7 +33,7 @@ class Core {
     }
   }
 
-  addRoute(type = 'get', routePath, cb) {
+  addRoute (type = 'get', routePath, cb) {
     this.routes.push({ type, routePath, cb })
   }
 
@@ -43,7 +43,7 @@ class Core {
     if (app) {
       routes.forEach(route => {
         const { type, routePath, cb } = route
-        
+
         app[type](routePath, cb)
       })
 
