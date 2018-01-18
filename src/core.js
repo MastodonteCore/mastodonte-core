@@ -19,6 +19,7 @@ class Core {
     this.settings = Object.assign({}, settingsDefault, settings)
     this.app = init(this.settings)
     this.modules = []
+    this.routes = []
   }
 
   add (appName, appModule) {
@@ -32,21 +33,25 @@ class Core {
     }
   }
 
+  addRoute(type = 'get', routePath, cb) {
+    this.routes.push({ type, routePath, cb })
+  }
+
   run () {
     const { app, settings, modules, routes } = this
 
     if (app) {
-      if (routes && routes !== {}) {
-        app.use('/', routes)
-      }
+      routes.forEach(route => {
+        const { type, routePath, cb } = route
+        
+        app[type](routePath, cb)
+      })
 
-      if (modules.length > 0) {
-        modules.forEach(m => {
-          const { appRoute, appModule } = m
+      modules.forEach(m => {
+        const { appRoute, appModule } = m
 
-          app.use(appRoute, appModule(settings))
-        })
-      }
+        app.use(appRoute, appModule(settings))
+      })
 
       app.listen(app.get('port'), () => {
         console.log(
