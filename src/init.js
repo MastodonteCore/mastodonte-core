@@ -10,7 +10,6 @@ const chalk = require('chalk')
 const lusca = require('lusca')
 const MongoStore = require('connect-mongo')(expressSession)
 const flash = require('express-flash')
-const path = require('path')
 const mongoose = require('mongoose')
 const expressValidator = require('express-validator')
 const expressStatusMonitor = require('express-status-monitor')
@@ -70,7 +69,7 @@ module.exports = function (settings) {
   app.use(lusca.xframe('SAMEORIGIN'))
   app.use(lusca.xssProtection(true))
   app.use(
-    express.static(publicDir, { maxAge: 31557600000 }),
+    express.static(publicDir, { maxAge: 31557600000 })
   )
 
   return app
