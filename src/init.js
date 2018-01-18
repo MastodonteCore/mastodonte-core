@@ -16,7 +16,7 @@ const expressValidator = require('express-validator')
 const expressStatusMonitor = require('express-status-monitor')
 
 module.exports = function (settings) { 
-  const { host, port, mongodb, session, viewsDir, viewEngine, publicDir,  } = settings
+  const { host, port, mongodb, session, viewsDir, viewEngine, publicDir } = settings
   const sessionConfigDefault = {
     resave: true,
     saveUninitialized: true,
