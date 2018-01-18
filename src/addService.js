@@ -1,9 +1,7 @@
 function addService (serviceName, fn) {
-  const { settings } = this
+  const { services } = this
 
-  if (settings && settings.services) {
-    const { services } = settings
-
+  if (services) {
     Object.defineProperty(services, serviceName, {
       value: fn,
       writable: true,
