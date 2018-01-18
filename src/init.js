@@ -5,7 +5,6 @@ const express = require('express');
 const compression = require('compression');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
-const nunjucks = require('nunjucks');
 const logger = require('morgan');
 const chalk = require('chalk');
 const lusca = require('lusca');
@@ -16,9 +15,8 @@ const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 
-module.exports = function (core) { 
-  const { settings, modules, routes } = core
-  const { host, port, mongodb, session, viewsDir, publicDir,  } = settings
+module.exports = function ({ settings, modules, routes }) { 
+  const { host, port, mongodb, session, viewsDir, viewEngine, publicDir,  } = settings
   /**
  * Create Express server.
  */
@@ -40,19 +38,12 @@ module.exports = function (core) {
   });
 
   /**
-   * Configure Nunjucks
-   */
-  nunjucks.configure(viewsDir, {
-    autoescape: true,
-    express: app,
-  });
-
-  /**
    * Express configuration.
    */
   app.set('host', host);
   app.set('port', port);
-  app.set('view engine', 'html');
+  app.set('views', viewsDir);
+  app.set('view engine', viewEngine);
   app.use(expressStatusMonitor());
   app.use(compression());
   app.use(logger('dev'));
@@ -91,7 +82,7 @@ module.exports = function (core) {
     modules.forEach(m => {
       const { appRoute, appModule } = m;
 
-      app.use(appRoute, appModule(core))
+      app.use(appRoute, appModule(settings))
     })
   }
 

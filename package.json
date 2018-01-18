@@ -23,8 +23,7 @@
     "express-validator": "^3.2.1",
     "lusca": "^1.5.1",
     "mongoose": "^4.11.7",
-    "morgan": "^1.8.2",
-    "nunjucks": "^3.0.1"
+    "morgan": "^1.8.2"
   },
   "devDependencies": {
     "chai": "^4.1.1",

@@ -6,6 +6,7 @@ const settingsDefault = {
   mongodb: 'mongodb://localhost:27017/test',
   session: 'Your Session Secret goes here',
   viewsDir: 'views',
+  viewEngine: 'html',
   publicDir: 'public',
   services: {}
 }
@@ -37,7 +38,7 @@ const addService = function(serviceName, fn) {
 }
 
 const run = function() {
-  const { settings } = this;
+  const { settings, modules, routes } = this;
 
   if (settings && settings !== {}) {
     init(this); 
