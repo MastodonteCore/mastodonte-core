@@ -1,4 +1,6 @@
-const init = require('./init');
+const init = require('./init')
+const chalk = require('chalk')
+const addService = require('./addService')
 
 const settingsDefault = {
   host: '0.0.0.0',
@@ -8,48 +10,55 @@ const settingsDefault = {
   viewsDir: 'views',
   viewEngine: 'html',
   publicDir: 'public',
-  services: {}
+  services: {},
+  addService
 }
 
-const addModule = function(appName, appModule) {
-  const { modules } = this;
+class Core {
+  constructor(settings) {
+    this.settings = Object.assign({}, settingsDefault, settings)
+    this.app = init(this.settings)
+    this.modules = []
+  }
 
-  if (modules) {
-    modules.push({
-      appRoute: `/${appName}`,
-      appModule
-    })
+  add(appName, appModule) {
+    const { modules } = this
+
+    if (modules) {
+      modules.push({
+        appRoute: `/${appName}`,
+        appModule
+      })
+    }
+  }
+
+  run() {
+    const { app, settings, modules, routes } = this
+
+    if (app) {
+      if (routes && routes !== {}) {
+        app.use('/', routes)
+      }
+  
+      if (modules.length > 0) {
+        modules.forEach(m => {
+          const { appRoute, appModule } = m
+  
+          app.use(appRoute, appModule(settings))
+        })
+      }
+  
+      app.listen(app.get('port'), () => {
+        console.log(
+          `%s App is running at ${app.get('host')}:%d in %s mode`,
+          chalk.green('✓'),
+          app.get('port'),
+          app.get('env'),
+        );
+        console.log('  Press CTRL-C to stop\n')
+      })
+    }
   }
 }
 
-const addService = function(serviceName, fn) {
-  const { settings } = this;
-
-  if (settings && settings.services) {
-    const { services } = settings;
-
-    Object.defineProperty(services, serviceName, {
-      value: fn,
-      writable: true,
-      enumerable: true,
-      configurable: true
-    })
-  }
-}
-
-const run = function() {
-  const { settings, modules, routes } = this;
-
-  if (settings && settings !== {}) {
-    init(this); 
-  }
-}
-
-module.exports = {
-  app: null,
-  settings: settingsDefault,
-  modules: [],
-  add: addModule,
-  addService,
-  run
-}
+module.exports = Core

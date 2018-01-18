@@ -1,8 +1,8 @@
-const core = require('./src/core')
+const Core = require('./src/core')
 
-core.addService('stringify', (arg) => JSON.stringify(arg))
-core.addService('test', () => console.log('test'))
+const core = new Core()
 
-core.add('test', (c) => c.addService('toto', () => 'toto'))
+core.settings.addService('stringify', (arg) => JSON.stringify(arg))
+core.settings.addService('test', () => console.log('test'))
 
 core.run()
