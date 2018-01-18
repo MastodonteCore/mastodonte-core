@@ -14,7 +14,7 @@ const mongoose = require('mongoose')
 const expressValidator = require('express-validator')
 const expressStatusMonitor = require('express-status-monitor')
 
-module.exports = function (settings) { 
+module.exports = function (settings) {
   const { host, port, mongodb, session, viewsDir, viewEngine, publicDir } = settings
   const sessionConfigDefault = {
     resave: true,
@@ -36,7 +36,7 @@ module.exports = function (settings) {
       console.error(err)
       console.log(
         '%s MongoDB connection error. Please make sure MongoDB is running.',
-        chalk.red('✗'),
+        chalk.red('✗')
       )
       process.exit()
     })
@@ -60,8 +60,8 @@ module.exports = function (settings) {
       store: new MongoStore({
         url: mongodb,
         autoReconnect: true,
-        clear_interval: 3600,
-      }),
+        clear_interval: 3600
+      })
     }) : sessionConfigDefault)
   )
   app.use(flash())

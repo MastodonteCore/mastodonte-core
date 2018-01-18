@@ -1,4 +1,4 @@
-function addService(serviceName, fn) {
+function addService (serviceName, fn) {
   const { settings } = this
 
   if (settings && settings.services) {
