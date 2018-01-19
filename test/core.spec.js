@@ -1,5 +1,5 @@
 const Core = require('../src/core')
-const { expect } = require('chai');
+const { expect } = require('chai')
 const request = require('supertest')
 
 describe('Class Core', () => {
