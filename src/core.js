@@ -39,7 +39,7 @@ class Core {
     if (app) {
       routes.forEach(route => attachRoute(route, app))
 
-      modules.forEach(mod => attachModule(mod, app))
+      modules.forEach(mod => attachModule(mod, app, settings))
 
       server.listen(app.get('port'), () => {
         console.log(
@@ -60,7 +60,7 @@ function attachRoute(route, app) {
   app[type](routePath, cb)
 }
 
-function attachModule(mod, app) {
+function attachModule(mod, app, settings) {
   const { appRoute, appModule } = mod
 
   app.use(appRoute, appModule(settings))
