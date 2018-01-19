@@ -1,22 +1,8 @@
 const chalk = require('chalk')
-const addService = require('./addService')
 const createServer = require('./createServer')
 const createWebSocketServer = require('./createWebSocketServer')
+const settingsDefault = require('./settingsDefault')
 const init = require('./init')
-
-const settingsDefault = {
-  host: '0.0.0.0',
-  port: 8000,
-  mongodb: 'mongodb://localhost:27017/test',
-  session: 'Your Session Secret goes here',
-  ssl: {},
-  viewsDir: 'views',
-  viewEngine: 'html',
-  publicDir: 'public',
-  services: {},
-  ws: false,
-  addService
-}
 
 class Core {
   constructor (settings) {
