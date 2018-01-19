@@ -19,9 +19,13 @@ Table of Contents
 Features
 --------
 
-- Accept microservices (an express app attached to a route)
-- Settings accessible in all app even for each microservices
+- Accept microservices
+- Parameters accessible in all app even for each microservice
 - Flash notifications
+- `body-parser` include by default
+- Gzip responses
+- SSL (optional)
+- WebSocket server (optional)
 - Node.js clusters support
 - CSRF protection
 
