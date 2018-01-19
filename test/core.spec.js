@@ -43,7 +43,7 @@ describe('Class Core', () => {
     it('should return 200 OK', (done) => {    
       core.run()
 
-      request(core.app)
+      request(core.server)
         .get('/')
         .expect(200, done)
     })

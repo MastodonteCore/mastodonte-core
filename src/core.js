@@ -1,5 +1,7 @@
 const chalk = require('chalk')
 const addService = require('./addService')
+const createServer = require('./createServer')
+const createWebSocketServer = require('./createWebSocketServer')
 const init = require('./init')
 
 const settingsDefault = {
@@ -7,10 +9,12 @@ const settingsDefault = {
   port: 8000,
   mongodb: 'mongodb://localhost:27017/test',
   session: 'Your Session Secret goes here',
+  ssl: {},
   viewsDir: 'views',
   viewEngine: 'html',
   publicDir: 'public',
   services: {},
+  ws: false,
   addService
 }
 
@@ -18,6 +22,12 @@ class Core {
   constructor (settings) {
     this.settings = Object.assign({}, settingsDefault, settings)
     this.app = init(this.settings)
+    this.server = createServer(this.app, this.settings.ssl)
+
+    if (this.settings.ws) {
+      this.wss = createWebSocketServer(this.server)
+    }
+
     this.modules = []
     this.routes = []
   }
@@ -38,22 +48,14 @@ class Core {
   }
 
   run () {
-    const { app, settings, modules, routes } = this
+    const { app, settings, modules, routes, server } = this
 
     if (app) {
-      routes.forEach(route => {
-        const { type, routePath, cb } = route
+      routes.forEach(route => attachRoute(route, app))
 
-        app[type](routePath, cb)
-      })
+      modules.forEach(mod => attachModule(mod, app))
 
-      modules.forEach(m => {
-        const { appRoute, appModule } = m
-
-        app.use(appRoute, appModule(settings))
-      })
-
-      app.listen(app.get('port'), () => {
+      server.listen(app.get('port'), () => {
         console.log(
           `%s App is running at ${app.get('host')}:%d in %s mode`,
           chalk.green('✓'),
@@ -64,6 +66,18 @@ class Core {
       })
     }
   }
+}
+
+function attachRoute(route, app) {
+  const { type, routePath, cb } = route
+
+  app[type](routePath, cb)
+}
+
+function attachModule(mod, app) {
+  const { appRoute, appModule } = mod
+
+  app.use(appRoute, appModule(settings))
 }
 
 module.exports = Core
