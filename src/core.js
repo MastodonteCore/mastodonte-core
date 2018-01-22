@@ -29,8 +29,8 @@ class Core {
     }
   }
 
-  addRoute (type = 'get', routePath, cb) {
-    this.routes.push({ type, routePath, cb })
+  addRoute(routePath, type = 'get', cb) {
+    this.routes.push({ routePath, type, cb })
   }
 
   run () {

@@ -12,7 +12,7 @@ Table of Contents
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
-- [How It Works](#how-it-works-mini-guides)
+- [How It Works](#how-it-works)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -23,7 +23,7 @@ Features
 - Parameters accessible in all app even for each microservice
 - Flash notifications
 - `body-parser` include by default
-- Gzip responses
+- HTTP compression
 - SSL (optional)
 - WebSocket server (optional)
 - Node.js clusters support
@@ -70,7 +70,7 @@ const core = new Core({
 core.addService('stringify', (arg) => JSON.stringify(arg))
 
 // Add some routes
-core.addRoute('get', '/', (req, res) => res.send('Hello').end())
+core.addRoute('/', 'get', (req, res) => res.send('Hello').end())
 
 // Add your microservices
 const account = require('@mastodonte/account')
@@ -80,6 +80,49 @@ core.add('account', account)
 core.run()
 ```
 
+Settings
+--------
+
+| Key | Definition | Default |
+| --- | ---------- | ------- |
+| `host` | Define hostname server | 0.0.0.0 |
+| `port` | Set port where run your server | 8000 |
+| `mongodb` | Adress where located your mongodb database | mongodb://localhost:27017/test |
+| `session` | Secret string session | Your Session Secret goes here
+| `ssl` | Create https server by defining two properties: `key` & `cert` | {} |
+| `viewsDir` | Path views folder | views |
+| `viewEngine` | Define view engine type | html |
+| `publicDir` | Path public folder | public |
+| `services` | List by key name of all middlewares | {} |
+| `ws` | Define websocket server | false |
+
+API
+---
+
+## add
+Add a new microservice associate to a route.
+
+**Parameters**
+- `appName` (string) - Name of your microservice. This name become a route.
+- `appModule` (function) - Settings as argument. Your logic microservice.
+
+## addRoute
+Add a new route.
+
+**Parameters**
+- `routePath` (string) - Route path name
+- `type` (string) - HTTP Request type (`delete` | `get` | `post` | `put`)
+- `cb` (function) - Callback
+
+## run
+Run your server with settings defined.
+
+## settings.addService
+Add a new middleware/function accesible for all microservices.
+
+**Parameters**
+- `name` (string) - Name of your middleware
+- `fn` (function) - Middleware function
 
 Contributing
 ------------
@@ -93,7 +136,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2017 Olivier Monnier
+Copyright (c) 2014-2018 Olivier Monnier
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
