@@ -57,7 +57,7 @@ describe('Class Core', () => {
   })
 
   describe('addRoute', () => {
-    it('should add an item in core.routes', (done) => {
+    it('should add a item in core.routes', (done) => {
       core.addRoute('get', '/', (req, res) => res.status(200).end())
 
       expect(core.routes.length).to.equal(1)
