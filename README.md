@@ -47,7 +47,7 @@ Getting Started
 
 ```bash
 # Install and save in your node project
-npm i -S @mastodonte/core
+npm i -S @mastodontejs/core
 ```
 
 How It Works 
@@ -55,7 +55,7 @@ How It Works
 
 In your node file server
 ```javascript
-const Core = require('@mastodonte/core');
+const Core = require('@mastodontejs/core');
 
 // Init with settings
 const core = new Core({
@@ -74,7 +74,7 @@ core.addService('stringify', (arg) => JSON.stringify(arg))
 core.addRoute('get', '/', (req, res) => res.send('Hello').end())
 
 // Add your microservices
-const account = require('@mastodonte/account')
+const account = require('@mastodontejs/account')
 core.add('account', account)
 
 // Run server
