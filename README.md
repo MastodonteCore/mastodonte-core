@@ -68,7 +68,7 @@ const core = new Core({
 });
 
 // Add some methods accessible in all application (optional)
-core.settings.addService('stringify', (arg) => JSON.stringify(arg))
+core.addService('stringify', (arg) => JSON.stringify(arg))
 
 // Add some routes
 core.addRoute('get', '/', (req, res) => res.send('Hello').end())
@@ -115,15 +115,15 @@ Add a new route.
 - `routePath` (string) - Route path name
 - `cb` (function) - Callback
 
-## run
-Run your server with settings defined.
-
-## settings.addService
+## addService
 Add a new middleware/function accesible for all microservices.
 
 **Parameters**
 - `name` (string) - Name of your middleware
 - `fn` (function) - Middleware function
+
+## run
+Run your server with settings defined.
 
 Contributing
 ------------

@@ -33,7 +33,20 @@ class Core {
     this.routes.push({ type, routePath, cb })
   }
 
-  run () {
+  addService(serviceName, fn) {
+    const { settings } = this
+
+    if (settings.hasOwnProperty('services')) {
+      Object.defineProperty(settings.services, serviceName, {
+        value: fn,
+        writable: true,
+        enumerable: true,
+        configurable: true
+      })
+    }
+  }
+
+  run() {
     const { app, settings, modules, routes, server } = this
 
     if (app) {

@@ -42,7 +42,7 @@ describe('Class Core', () => {
 
   describe('addService', () => {
     it('should add a property in core.settings.services', (done) => {
-      core.settings.addService('stringify', (arg) => JSON.stringify(arg))
+      core.addService('stringify', (arg) => JSON.stringify(arg))
 
       expect(core.settings.services).to.have.property('stringify')     
       done()

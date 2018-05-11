@@ -1,5 +1,3 @@
-const addService = require('./addService')
-
 const settingsDefault = {
   host: '0.0.0.0',
   port: 8000,
@@ -11,7 +9,6 @@ const settingsDefault = {
   publicDir: 'public',
   services: {},
   ws: false,
-  addService
 }
 
 module.exports = settingsDefault
