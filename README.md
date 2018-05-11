@@ -70,7 +70,7 @@ const core = new Core({
 core.addService('stringify', (arg) => JSON.stringify(arg))
 
 // Add some routes
-core.addRoute('/', 'get', (req, res) => res.send('Hello').end())
+core.addRoute('get', '/', (req, res) => res.send('Hello').end())
 
 // Add your microservices
 const account = require('@mastodonte/account')
@@ -110,8 +110,8 @@ Add a new microservice associate to a route.
 Add a new route.
 
 **Parameters**
-- `routePath` (string) - Route path name
 - `type` (string) - HTTP Request type (`delete` | `get` | `post` | `put`)
+- `routePath` (string) - Route path name
 - `cb` (function) - Callback
 
 ## run
