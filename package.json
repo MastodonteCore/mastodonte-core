@@ -8,7 +8,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec",
+    "test": "mocha --reporter spec --exit",
     "standard": "standard \"./src/**/*.js\" --fix"
   },
   "dependencies": {
