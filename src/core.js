@@ -18,7 +18,7 @@ class Core {
     this.routes = []
   }
 
-  add (appName, appModule) {
+  add(appName, appModule) {
     const { modules } = this
 
     if (modules) {

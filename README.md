@@ -55,7 +55,8 @@ How It Works
 
 In your node file server
 ```javascript
-const Core = require('@mastodonte/core')
+const Core = require('@mastodonte/core');
+
 // Init with settings
 const core = new Core({
   host: '0.0.0.0',
@@ -64,10 +65,10 @@ const core = new Core({
   session: 'Your Session Secret goes here',
   viewEngine: 'html',
   views: 'views'
-})
+});
 
 // Add some methods accessible in all application (optional)
-core.addService('stringify', (arg) => JSON.stringify(arg))
+core.settings.addService('stringify', (arg) => JSON.stringify(arg))
 
 // Add some routes
 core.addRoute('get', '/', (req, res) => res.send('Hello').end())
