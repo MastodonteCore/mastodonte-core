@@ -11,7 +11,6 @@ const lusca = require('lusca')
 const MongoStore = require('connect-mongo')(expressSession)
 const flash = require('express-flash')
 const mongoose = require('mongoose')
-const expressValidator = require('express-validator')
 const expressStatusMonitor = require('express-status-monitor')
 
 module.exports = function (settings) {
@@ -54,7 +53,6 @@ module.exports = function (settings) {
   app.use(logger('dev'))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
-  app.use(expressValidator())
   app.use(
     expressSession((mongodb) ? Object.assign({}, sessionConfigDefault, {
       store: new MongoStore({
